@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Resource Planning</title>
+    <link rel="stylesheet" href="style2.cs">
+</head>
+<body>
+
+    <button class="toggle-sidebar" id="toggleSidebar">
+        <i class="bars"></i>
+    </button>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="calculator"></i>ERP Finance</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="" class="active" data-page="dashboard"><i class="home"></i> Dashboard</a></li>
+            <li><a href="" data-page="coa"><i class="list"></i> Chart Of Accounts</a></li>
+            <li><a href="" data-page="gl"><i class="book"></i> General Ledger</a></li>
+            <li><a href="" data-page="ap"><i class="invoice-dollar"></i>Account Payable <span class="badge new">5</span></a></li>
+            <li><a href="" data-page="ar"><i class="hand-holding-usd"></i> Account Receivable <span class="badge new">12</span></a></li>
+            <li><a href="" data-page="assets"><i class="building"></i> Fixed Assets</a></li>
+            <li><a href="" data-page="bank"><i class="university"></i> Bank & Receivable</a></li>
+            <li><a href="" data-page="budget"><i class="chart-line"></i> Budgeting</a></li>
+            <li><a href="" data-page="reports"><i class="chart-bar"></i> Financial Reports</a></li>
+            <li><a href="" data-page="users"><i class="user-cog"></i> User Management</a></li>
+            <li><a href="" data-page="setup"><i class="cogs"></i> Module Setup</a></li>
+            <li><a href="" data-page="comparison"><i class="columns"></i> Domin Comparison</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content" id="mainContent">
+       
+        <div class="topbar">
+            <div class="page-title">
+                <h1 id="pageTitle">Finance Dashboard</h1>
+                <div class="subtitle" id="domainBadge">General Business</div>
+            </div>
+            <div class="user-actions">
+                <div class="notification" onclick="toggleNotifications()">
+                    <i class="bell" style="font-size: 1.3rem; color: #666;"> </i>
+                    <span class="notification-badge">3</span>   
+                </div>
+                <select class="form-control filter-dropdown" id="domainSelector" style="width: 180px;" onchange="changeDomain(this.value)">
+                    <option value="general">General Business</option>
+                    <option value="hotel">Hotel Industry</option>
+                    <option value="education">Education Sector</option>
+                    <option value="banking">Banking</option>
+                    <option value="manufacturing">Manufacturing</option>
+                </select>
+                <div class="user-profile" onclick="showUserMenu()">
+                    <div class="user-avatar">
+                        <span id="userInitials">AD</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="script.j"></script>
+</body>
+</html>
