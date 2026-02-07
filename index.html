@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprise Resource Planning</title>
-    <link rel="stylesheet" href="style2.cs">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -55,7 +55,75 @@
                     <div class="user-avatar">
                         <span id="userInitials">AD</span>
                     </div>
-                    
+                    <div class="user-info">
+                        <h4 id="userName">Admin User</h4>
+                        <p id="userRole">System Administrator</p>
+                    </div>
+                    <i class="chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="page-content active" id="dashboardContent">
+                <div class="card-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="dollar-sign"></i>Total Revenue</div>
+                            <i class="chart-line" style="color: var(--success);"></i>
+                        </div>
+                        <div class="card-value" id="totalRevenue">$ 245,830</div>
+                        <div class="card-trend positive">
+                            <i class="arrow-up"></i> 12.5% Vs last Month
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="file-invoice"></i> Account Receivable</div>
+                            <i class="exclumation-circle" style="color: var(--warning);"></i>
+                        </div>
+                        <div class="card-value" id="totalAR">$ 42,560</div>
+                        <div class="card-trend negative">
+                            <i class="arrow-up"></i> 8.2% overdue
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="invoice-dollar"></i> Account Payable</div>
+                            <i class="clock" style="color: var(--danger);"></i>
+                        </div>
+                        <div class="card-value" id="totalAP">$ 28, 750</div>
+                        <div class="card-trend positive">
+                            <i class="arrow-down"></i> 15.3% decrease
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="university"></i> Cash Balance</div>
+                            <i class="piggy-bank" style="color: var(--primary);"></i>
+                        </div>
+                        <div class="card-value" id="cashBalance">$ 125,420</div>
+                        <div class="card-trend positive">
+                            <i class="arrow-up"></i> 5.8% increase
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="chart-line"></i> Financial Overview</h2>
+                        <div class="section-action">
+                            <select class="from-control" id="chartPeriod" style="width:  150px;" onchange="updateFinancialChart()">
+                                <option value="30">Last 30 Days</option>
+                                <option value="90">LastQuarter</option>
+                                <option value="365">Last Year</option>
+                                <option value="ytd">Year TO Date</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="financialChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
