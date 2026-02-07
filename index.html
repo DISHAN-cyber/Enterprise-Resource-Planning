@@ -125,9 +125,47 @@
                         <canvas id="financialChart"></canvas>
                     </div>
                 </div>
+
+                <div class="moule-selction">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="tasks"></i> Pending Actions</h2>
+                        <button class="btn btn-primary" onclick="markAllComplete()">Mark All Complete</button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Module</th>
+                                    <th>Priority</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingActions"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="coContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="list-alt"></i>Chart Of Accounts</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="showModal('addAccountModal')"><i class="plus"></i>Add Account</button>
+                            <button class="btn btn-success" onclick="exportCOA()"><i class="export"></i>Export</button>
+                            <button class="btn btn-info" onclick="loadSampleCOA()"><i class="download"></i>Load Sample</button>
+                        </div>
+                    </div>
+
+                    
+                </div>
             </div>
         </div>
     </main>
-    <script src="script.j"></script>
+    <script src="script.js"></script>
 </body>
 </html>
