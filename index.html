@@ -209,7 +209,120 @@
                                         <th>Status</th>
                                     </tr>
                                 </thead>
+                                <tbody id="coTable"></tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="hierarchyTab">
+                        <div class="bank-card">
+                            <h3>Account hierarchy</h3>
+                            <div id="coHierarchy"></div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="balancesTab">
+                        <div class="chart-container">
+                            <canvas id="coBalanceChart"></canvas>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Account Type</th>
+                                        <th>Number Of Account</th>
+                                        <th>Total Balance</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coBalancesTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ledgerContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="book"></i> General Ledger</h2>
+                        <div class="section-action">
+                            <button class="btn btn-primary" onclick="showModal('journalEntryModal')"><i class="plus"></i> Add Journal Entry</button>
+                            <button class="btn btn-success" onclick="postAllEntries()"><i class="check-circle"></i> Post All Entries</button>
+                            <button class="btn btn-info" onclick="runMonthEndClose()"><i class="calender-check"></i> Month-end Close</button>
+                        </div>
+                    </div>
+
+                    <div class="cards-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Total Journal Entries</div>
+                                <i class="file-alt" style="color: var(--primary);"></i>
+                            </div>
+                            <div class="card-value"><span id="totalJournals">0</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Unposted Entries</div>
+                                <i class="clock" style="color: var(--warning);"></i>
+                            </div>
+                            <div class="card-value"><span id="unpostJournals">0</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">This Month</div>
+                                <i class="calendar" style="color: var(--info);"></i>
+                            </div>
+                            <div class="card-value"><span id="monthJournals">0</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card header">
+                                <div class="card-title">Debit/Credit Balance</div>
+                                <i class="balance-scale" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-value" style="font-size: 1.5rem;"><span id="debitCreditBalance">$0.00</span></div>
+                        </div>
+                    </div>
+
+                    <div class="workflow-steps">
+                        <div class="step completed" id="step1">
+                            <i class="plus"></i>
+                            <div class="step-label">Creat Entry</div>
+                        </div>
+                        <div class="step" id="step2">
+                            <i class="eye"></i>
+                            <div class="step-label">Review</div>
+                        </div>
+                        <div class="step" id="step3">
+                            <i class="check"></i>
+                            <div class="step-label">Approve</div>
+                        </div>
+                        <div class="step" id="step4">
+                            <i class="book"></i>
+                            <div class="step-label">Post To GL</div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="journals">Journal Entries</div>
+                        <div class="tab" data-tab="trialbalance">Trial Balance</div>
+                        <div class="tab" data-tab="ledger">Ledger Details</div>
+                        <div class="tab" data-tab="closing">Period Closing</div>
+                    </div>
+
+                    <div class="tab-content active" id="journalsTab">
+                        <div class="search-filter">
+                            <div class="search-box">
+                                <i class="search"></i>
+                                <input type="text" class="form-control" id="journalSearch" placeholder="Search journal entries..." onkeyup="searchJournals()">
+                            </div>
+                            <select class="form-control filter-dropdown" id="journalStatusFilter" onchange="filterJournals()">
+                                <option value="All">All Status</option>
+                                <option value="Draft">Draft</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Posted">Posted</option>
+                            </select>
+                            <input type="date" class="form-control filter-dropdown" id="journalDateFilter" onchange="filterJournals()">
                         </div>
                     </div>
                 </div>
