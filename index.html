@@ -447,7 +447,59 @@
                 </div>
             </div>
 
-            Acc
+            <div class="page-content" id="Content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="file-invoice-dollar"></i>Account Payable</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="showModal('addInvoiceModal')"><i class="plus"></i>Add Invoice</button>
+                            <button class="btn btn-success" onclick="processBatchPayments()"><i class="money-check-alt"></i>Process Payments</button>
+                            <button class="btn btn-outline" onclick="exportAPData()"><i class="export"></i> Export</button>
+                        </div>
+                    </div>
+
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="search"></i>
+                            <input type="text" class="form-control" id="apSearch" placeholder="Search invoice, vendors..." onkeyup="searchAP()">
+                        </div>
+                        <select class="form-control filter-dropdown" id="apVendorFilter" onchange="filterAP()">
+                            <option value="all">All vendors</option>
+                        </select>
+                    </div>
+
+                    <div class="card-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Total Due</div>
+                                <i class="exclamation-circle" style="color: var(--danger);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="apTotalDue">28,750</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Overdue</div>
+                                <i class="clock" style="color: var(--warning);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="apOverdue">5,420</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Due This Week</div>
+                                <i class="calender-week" style="color: var(--primary);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="apDueThisWeek">12,350</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Vandor</div>
+                                <i class="users" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-value"><span id="apVendorCount">42</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <script src="script.js"></script>
