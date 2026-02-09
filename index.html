@@ -406,11 +406,48 @@
                                         <option value="year">Year-End</option>
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label class="form-label">Closing Date</label>
+                                    <input type="date" class="form-control" id="closingDate">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Closing Tasks</label>
+                                <div id="closingTasks">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="closeSublegers" checked>
+                                        <label class="form-check-label" for="closeSubledgers">Close Sub-ledgers (AP/AR)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="runDepreciation" checked>
+                                        <label class="form-check-lable" for="runDepreciation">Run runDepreciation</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="postAccruals" checked>
+                                        <label class="form-check-label" for="postAccruals">Post Accruals & Adjustments</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="reconcileAccounts" checked>
+                                        <label class="form-check-label" for="reconcileAccounts">Reconcile Accounts</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="generateReports" checked>
+                                        <label class="form-check-label" for="generateReports">Generate Financial Reports</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="text-align: center; margin-top: 30;">
+                                <button class="btn btn-success" onclick="runClosingProcess()">Run Closing Process</button>
+                                <button class="btn btn-outline" onclick="reverseClosing()">Reverse Last Closing</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            Acc
         </div>
     </main>
     <script src="script.js"></script>
