@@ -9,35 +9,35 @@
 
 <body>
 
+       <!-- Toggle Sidebar Button -->
     <button class="toggle-sidebar" id="toggleSidebar">
         <i class="bars"></i>
     </button>
 
+    <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h2><i class="calculator"></i>ERP Finance</h2>
+            <h2><i class="calculator"></i> ERP Finance</h2>
         </div>
-
         <ul class="sidebar-menu">
-            <li><a href="" class="active" data-page="dashboard"><i class="home"></i> Dashboard</a></li>
-            <li><a href="" data-page="coa"><i class="list"></i> Chart Of Accounts</a></li>
-            <li><a href="" data-page="gl"><i class="book"></i> General Ledger</a></li>
-            <li><a href="" data-page="ap"><i class="invoice-dollar"></i>Account Payable <span
-                        class="badge new">5</span></a></li>
-            <li><a href="" data-page="ar"><i class="hand-holding-usd"></i> Account Receivable <span
-                        class="badge new">12</span></a></li>
-            <li><a href="" data-page="assets"><i class="building"></i> Fixed Assets</a></li>
-            <li><a href="" data-page="bank"><i class="university"></i> Bank & Receivable</a></li>
-            <li><a href="" data-page="budget"><i class="chart-line"></i> Budgeting</a></li>
-            <li><a href="" data-page="reports"><i class="chart-bar"></i> Financial Reports</a></li>
-            <li><a href="" data-page="users"><i class="user-cog"></i> User Management</a></li>
-            <li><a href="" data-page="setup"><i class="cogs"></i> Module Setup</a></li>
-            <li><a href="" data-page="comparison"><i class="columns"></i> Domin Comparison</a></li>
+            <li><a href="#" class="active" data-page="dashboard"><i class="home"></i> Dashboard</a></li>
+            <li><a href="#" data-page="coa"><i class="list-alt"></i> Chart of Accounts</a></li>
+            <li><a href="#" data-page="gl"><i class="book"></i> General Ledger</a></li>
+            <li><a href="#" data-page="ap"><i class="file-invoice-dollar"></i> Accounts Payable <span class="badge new">5</span></a></li>
+            <li><a href="#" data-page="ar"><i class="hand-holding-usd"></i> Accounts Receivable <span class="badge new">12</span></a></li>
+            <li><a href="#" data-page="assets"><i class="building"></i> Fixed Assets</a></li>
+            <li><a href="#" data-page="bank"><i class="university"></i> Bank & Reconciliation</a></li>
+            <li><a href="#" data-page="budget"><i class="chart-line"></i> Budgeting</a></li>
+            <li><a href="#" data-page="reports"><i class="chart-bar"></i> Financial Reports</a></li>
+            <li><a href="#" data-page="users"><i class="users-cog"></i> User Management</a></li>
+            <li><a href="#" data-page="setup"><i class="cogs"></i> Module Setup</a></li>
+            <li><a href="#" data-page="comparison"><i class="columns"></i> Domain Comparison</a></li>
         </ul>
     </nav>
 
+    <!-- Main Content -->
     <main class="main-content" id="mainContent">
-
+        <!-- Top Bar -->
         <div class="topbar">
             <div class="page-title">
                 <h1 id="pageTitle">Finance Dashboard</h1>
@@ -45,11 +45,10 @@
             </div>
             <div class="user-actions">
                 <div class="notification" onclick="toggleNotifications()">
-                    <i class="bell" style="font-size: 1.3rem; color: #666;"> </i>
+                    <i class="bell" style="font-size: 1.3rem; color: #666;"></i>
                     <span class="notification-badge">3</span>
                 </div>
-                <select class="form-control filter-dropdown" id="domainSelector" style="width: 180px;"
-                    onchange="changeDomain(this.value)">
+                <select class="form-control filter-dropdown" id="domainSelector" style="width: 180px;" onchange="changeDomain(this.value)">
                     <option value="general">General Business</option>
                     <option value="hotel">Hotel Industry</option>
                     <option value="education">Education Sector</option>
@@ -69,23 +68,25 @@
             </div>
         </div>
 
+        <!-- Content Area -->
         <div class="content-area">
-            <div class="page-content active" id="dashboardContent">
-                <div class="card-container">
+            <!-- Dashboard -->
+            <div id="dashboardContent" class="page-content active">
+                <div class="cards-container">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title"><i class="dollar-sign"></i>Total Revenue</div>
+                            <div class="card-title"><i class="dollar-sign"></i> Total Revenue</div>
                             <i class="chart-line" style="color: var(--success);"></i>
                         </div>
                         <div class="card-value" id="totalRevenue">$ 245,830</div>
                         <div class="card-trend positive">
-                            <i class="arrow-up"></i> 12.5% Vs last Month
+                            <i class="arrow-up"></i> 12.5% vs last month
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title"><i class="file-invoice"></i> Account Receivable</div>
-                            <i class="exclumation-circle" style="color: var(--warning);"></i>
+                            <div class="card-title"><i class="file-invoice"></i> Accounts Receivable</div>
+                            <i class="exclamation-circle" style="color: var(--warning);"></i>
                         </div>
                         <div class="card-value" id="totalAR">$ 42,560</div>
                         <div class="card-trend negative">
@@ -94,10 +95,10 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title"><i class="invoice-dollar"></i> Account Payable</div>
+                            <div class="card-title"><i class="file-invoice-dollar"></i> Accounts Payable</div>
                             <i class="clock" style="color: var(--danger);"></i>
                         </div>
-                        <div class="card-value" id="totalAP">$ 28, 750</div>
+                        <div class="card-value" id="totalAP">$ 28,750</div>
                         <div class="card-trend positive">
                             <i class="arrow-down"></i> 15.3% decrease
                         </div>
@@ -117,13 +118,12 @@
                 <div class="module-section">
                     <div class="section-header">
                         <h2 class="section-title"><i class="chart-line"></i> Financial Overview</h2>
-                        <div class="section-action">
-                            <select class="from-control" id="chartPeriod" style="width:  150px;"
-                                onchange="updateFinancialChart()">
+                        <div class="section-actions">
+                            <select class="form-control" id="chartPeriod" style="width: 150px;" onchange="updateFinancialChart()">
                                 <option value="30">Last 30 Days</option>
-                                <option value="90">LastQuarter</option>
-                                <option value="365">Last Year</option>
-                                <option value="ytd">Year TO Date</option>
+                                <option value="90">Last Quarter</option>
+                                <option value="365" selected>Last Year</option>
+                                <option value="ytd">Year to Date</option>
                             </select>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                     </div>
                 </div>
 
-                <div class="moule-selction">
+                <div class="module-section">
                     <div class="section-header">
                         <h2 class="section-title"><i class="tasks"></i> Pending Actions</h2>
                         <button class="btn btn-primary" onclick="markAllComplete()">Mark All Complete</button>
@@ -146,7 +146,7 @@
                                     <th>Priority</th>
                                     <th>Due Date</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="pendingActions"></tbody>
@@ -155,27 +155,24 @@
                 </div>
             </div>
 
-
-            <div id="coContent" class="page-content" style="display: none;">
+            <!-- Chart of Accounts -->
+            <div id="coaContent" class="page-content" style="display: none;">
                 <div class="module-section">
                     <div class="section-header">
-                        <h2 class="section-title"><i class="list-alt"></i>Chart Of Accounts</h2>
+                        <h2 class="section-title"><i class="list-alt"></i> Chart of Accounts</h2>
                         <div class="section-actions">
-                            <button class="btn btn-primary" onclick="showModal('addAccountModal')"><i
-                                    class="plus"></i>Add Account</button>
-                            <button class="btn btn-success" onclick="exportCOA()"><i class="export"></i>Export</button>
-                            <button class="btn btn-info" onclick="loadSampleCOA()"><i class="download"></i>Load
-                                Sample</button>
+                            <button class="btn btn-primary" onclick="showModal('addAccountModal')"><i class="plus"></i> Add Account</button>
+                            <button class="btn btn-success" onclick="exportCOA()"><i class="file-export"></i> Export</button>
+                            <button class="btn btn-info" onclick="loadSampleCOA()"><i class="download"></i> Load Sample</button>
                         </div>
                     </div>
-
+                    
                     <div class="search-filter">
                         <div class="search-box">
                             <i class="search"></i>
-                            <input type="text" class="form-control" id="coaSearch" placeholder="Search account..."
-                                onkeyup="searchCOA()">
+                            <input type="text" class="form-control" id="coaSearch" placeholder="Search accounts..." onkeyup="searchCOA()">
                         </div>
-                        <select class="form-control filter-dropdown" id="coTypeFilter" onchange="filterCOA()">
+                        <select class="form-control filter-dropdown" id="coaTypeFilter" onchange="filterCOA()">
                             <option value="all">All Types</option>
                             <option value="Asset">Asset</option>
                             <option value="Liability">Liability</option>
@@ -183,17 +180,17 @@
                             <option value="Revenue">Revenue</option>
                             <option value="Expense">Expense</option>
                         </select>
-                        <select class="form-control filter-dropdown" id="coStatusFilter" onchange="filterCOA()">
+                        <select class="form-control filter-dropdown" id="coaStatusFilter" onchange="filterCOA()">
                             <option value="all">All Status</option>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                         </select>
                     </div>
-
+                    
                     <div class="tabs">
-                        <div class="tab active" data-tab="accounts">Account List</div>
+                        <div class="tab active" data-tab="accounts">Accounts List</div>
                         <div class="tab" data-tab="hierarchy">Account Hierarchy</div>
-                        <div class="tab" data-tab="balance">Account Balances</div>
+                        <div class="tab" data-tab="balances">Account Balances</div>
                     </div>
 
                     <div class="tab-content active" id="accountsTab">
@@ -204,55 +201,57 @@
                                         <th>Account Code</th>
                                         <th>Account Name</th>
                                         <th>Type</th>
-                                        <th>Sub-type</th>
+                                        <th>Sub-Type</th>
                                         <th>Balance</th>
                                         <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="coTable"></tbody>
+                                <tbody id="coaTable"></tbody>
                             </table>
                         </div>
                     </div>
 
                     <div class="tab-content" id="hierarchyTab">
                         <div class="bank-card">
-                            <h3>Account hierarchy</h3>
-                            <div id="coHierarchy"></div>
+                            <h3>Account Hierarchy</h3>
+                            <div id="coaHierarchy"></div>
                         </div>
                     </div>
 
                     <div class="tab-content" id="balancesTab">
                         <div class="chart-container">
-                            <canvas id="coBalanceChart"></canvas>
+                            <canvas id="coaBalanceChart"></canvas>
                         </div>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
                                         <th>Account Type</th>
-                                        <th>Number Of Account</th>
+                                        <th>Number of Accounts</th>
                                         <th>Total Balance</th>
                                         <th>Percentage</th>
                                     </tr>
                                 </thead>
-                                <tbody id="coBalancesTable"></tbody>
+                                <tbody id="coaBalancesTable"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="ledgerContent" class="page-content" style="display: none;">
+            <!-- General Ledger -->
+            <div id="glContent" class="page-content" style="display: none;">
                 <div class="module-section">
                     <div class="section-header">
                         <h2 class="section-title"><i class="book"></i> General Ledger</h2>
-                        <div class="section-action">
+                        <div class="section-actions">
                             <button class="btn btn-primary" onclick="showModal('journalEntryModal')"><i class="plus"></i> Add Journal Entry</button>
                             <button class="btn btn-success" onclick="postAllEntries()"><i class="check-circle"></i> Post All Entries</button>
-                            <button class="btn btn-info" onclick="runMonthEndClose()"><i class="calender-check"></i> Month-end Close</button>
+                            <button class="btn btn-info" onclick="runMonthEndClose()"><i class="calendar-check"></i> Month-End Close</button>
                         </div>
                     </div>
-
+                    
                     <div class="cards-container">
                         <div class="card">
                             <div class="card-header">
@@ -266,17 +265,17 @@
                                 <div class="card-title">Unposted Entries</div>
                                 <i class="clock" style="color: var(--warning);"></i>
                             </div>
-                            <div class="card-value"><span id="unpostJournals">0</span></div>
+                            <div class="card-value"><span id="unpostedJournals">0</span></div>
                         </div>
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">This Month</div>
-                                <i class="calendar" style="color: var(--info);"></i>
+                                <i class="calendar-alt" style="color: var(--info);"></i>
                             </div>
                             <div class="card-value"><span id="monthJournals">0</span></div>
                         </div>
                         <div class="card">
-                            <div class="card header">
+                            <div class="card-header">
                                 <div class="card-title">Debit/Credit Balance</div>
                                 <i class="balance-scale" style="color: var(--success);"></i>
                             </div>
@@ -287,9 +286,9 @@
                     <div class="workflow-steps">
                         <div class="step completed" id="step1">
                             <i class="plus"></i>
-                            <div class="step-label">Creat Entry</div>
+                            <div class="step-label">Create Entry</div>
                         </div>
-                        <div class="step" id="step2">
+                        <div class="step active" id="step2">
                             <i class="eye"></i>
                             <div class="step-label">Review</div>
                         </div>
@@ -299,7 +298,7 @@
                         </div>
                         <div class="step" id="step4">
                             <i class="book"></i>
-                            <div class="step-label">Post To GL</div>
+                            <div class="step-label">Post to GL</div>
                         </div>
                     </div>
 
@@ -317,14 +316,14 @@
                                 <input type="text" class="form-control" id="journalSearch" placeholder="Search journal entries..." onkeyup="searchJournals()">
                             </div>
                             <select class="form-control filter-dropdown" id="journalStatusFilter" onchange="filterJournals()">
-                                <option value="All">All Status</option>
+                                <option value="all">All Status</option>
                                 <option value="Draft">Draft</option>
                                 <option value="Pending">Pending</option>
                                 <option value="Posted">Posted</option>
                             </select>
                             <input type="date" class="form-control filter-dropdown" id="journalDateFilter" onchange="filterJournals()">
                         </div>
-
+                        
                         <div class="table-container">
                             <table>
                                 <thead>
@@ -335,7 +334,7 @@
                                         <th>Debit Total</th>
                                         <th>Credit Total</th>
                                         <th>Status</th>
-                                        <th>Action</th> 
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="journalTable"></tbody>
@@ -349,15 +348,16 @@
                         </div>
                         <div class="table-container">
                             <table>
-                               <thead>
-                                 <tr>
-                                    <th>Account Code</th>
-                                    <th>Account Name</th>
-                                    <th>Debit Balance</th>
-                                    <th>Net Balance</th>
-                                </tr>
-                               </thead>
-                               <tbody id="trialBalanceTable"></tbody>
+                                <thead>
+                                    <tr>
+                                        <th>Account Code</th>
+                                        <th>Account Name</th>
+                                        <th>Debit Balance</th>
+                                        <th>Credit Balance</th>
+                                        <th>Net Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trialBalanceTable"></tbody>
                             </table>
                         </div>
                     </div>
@@ -365,15 +365,15 @@
                     <div class="tab-content" id="ledgerTab">
                         <div class="search-filter">
                             <div class="search-box">
-                                <i class="search"></i>
-                                <input type="text" class="form-control" id="ledgerSearch" placeholder="Search ledger entries..."> 
+                                <i class="fas fa-search"></i>
+                                <input type="text" class="form-control" id="ledgerSearch" placeholder="Search ledger entries...">
                             </div>
                             <select class="form-control filter-dropdown" id="ledgerAccountFilter">
                                 <option value="">Select Account</option>
                             </select>
                             <input type="date" class="form-control filter-dropdown" id="ledgerDateFilter">
                         </div>
-
+                        
                         <div class="table-container">
                             <table>
                                 <thead>
@@ -396,12 +396,12 @@
                         <div class="bank-card">
                             <h3>Period Closing Process</h3>
                             <p>Run month-end or year-end closing procedures</p>
-
+                            
                             <div class="form-row">
                                 <div class="form-group">
                                     <label class="form-label">Closing Period</label>
                                     <select class="form-control" id="closingPeriod">
-                                        <option value="month">Month-end</option>
+                                        <option value="month">Month-End</option>
                                         <option value="quarter">Quarter-End</option>
                                         <option value="year">Year-End</option>
                                     </select>
@@ -411,17 +411,17 @@
                                     <input type="date" class="form-control" id="closingDate">
                                 </div>
                             </div>
-
+                            
                             <div class="form-group">
                                 <label class="form-label">Closing Tasks</label>
                                 <div id="closingTasks">
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="closeSublegers" checked>
+                                        <input type="checkbox" class="form-check-input" id="closeSubledgers" checked>
                                         <label class="form-check-label" for="closeSubledgers">Close Sub-ledgers (AP/AR)</label>
                                     </div>
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="runDepreciation" checked>
-                                        <label class="form-check-lable" for="runDepreciation">Run runDepreciation</label>
+                                        <label class="form-check-label" for="runDepreciation">Run Depreciation</label>
                                     </div>
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="postAccruals" checked>
@@ -437,8 +437,8 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div style="text-align: center; margin-top: 30;">
+                            
+                            <div style="text-align: center; margin-top: 30px;">
                                 <button class="btn btn-success" onclick="runClosingProcess()">Run Closing Process</button>
                                 <button class="btn btn-outline" onclick="reverseClosing()">Reverse Last Closing</button>
                             </div>
@@ -447,28 +447,35 @@
                 </div>
             </div>
 
-            <div class="page-content" id="Content" style="display: none;">
+            <!-- Accounts Payable -->
+            <div id="apContent" class="page-content" style="display: none;">
                 <div class="module-section">
                     <div class="section-header">
-                        <h2 class="section-title"><i class="file-invoice-dollar"></i>Account Payable</h2>
+                        <h2 class="section-title"><i class="file-invoice-dollar"></i> Accounts Payable</h2>
                         <div class="section-actions">
-                            <button class="btn btn-primary" onclick="showModal('addInvoiceModal')"><i class="plus"></i>Add Invoice</button>
-                            <button class="btn btn-success" onclick="processBatchPayments()"><i class="money-check-alt"></i>Process Payments</button>
-                            <button class="btn btn-outline" onclick="exportAPData()"><i class="export"></i> Export</button>
+                            <button class="btn btn-primary" onclick="showModal('addInvoiceModal')"><i class="plus"></i> Add Invoice</button>
+                            <button class="btn btn-success" onclick="processBatchPayments()"><i class="money-check-alt"></i> Process Payments</button>
+                            <button class="btn btn-outline" onclick="exportAPData()"><i class="file-export"></i> Export</button>
                         </div>
                     </div>
-
+                    
                     <div class="search-filter">
                         <div class="search-box">
                             <i class="search"></i>
-                            <input type="text" class="form-control" id="apSearch" placeholder="Search invoice, vendors..." onkeyup="searchAP()">
+                            <input type="text" class="form-control" id="apSearch" placeholder="Search invoices, vendors..." onkeyup="searchAP()">
                         </div>
+                        <select class="form-control filter-dropdown" id="apStatusFilter" onchange="filterAP()">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="overdue">Overdue</option>
+                            <option value="paid">Paid</option>
+                        </select>
                         <select class="form-control filter-dropdown" id="apVendorFilter" onchange="filterAP()">
-                            <option value="all">All vendors</option>
+                            <option value="all">All Vendors</option>
                         </select>
                     </div>
-
-                    <div class="card-container">
+                    
+                    <div class="cards-container">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Total Due</div>
@@ -486,13 +493,13 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Due This Week</div>
-                                <i class="calender-week" style="color: var(--primary);"></i>
+                                <i class="calendar-week" style="color: var(--primary);"></i>
                             </div>
                             <div class="card-value">$ <span id="apDueThisWeek">12,350</span></div>
                         </div>
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Vandor</div>
+                                <div class="card-title">Vendors</div>
                                 <i class="users" style="color: var(--success);"></i>
                             </div>
                             <div class="card-value"><span id="apVendorCount">42</span></div>
@@ -501,14 +508,932 @@
 
                     <div class="tabs">
                         <div class="tab active" data-tab="invoices">Invoices</div>
-                        <div class="tab" data-tab="Vendors">Vendors</div>
+                        <div class="tab" data-tab="vendors">Vendors</div>
                         <div class="tab" data-tab="payments">Payment History</div>
-                        <div class="tab" data-tab="againg">Aging Analysis</div>
+                        <div class="tab" data-tab="aging">Aging Analysis</div>
+                    </div>
+
+                    <div class="tab-content active" id="invoicesTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Vendor</th>
+                                        <th>Invoice No.</th>
+                                        <th>Date</th>
+                                        <th>Due Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="apTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accounts Receivable -->
+            <div id="arContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="hand-holding-usd"></i> Accounts Receivable</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="showModal('addInvoiceARModal')"><i class="plus"></i> Create Invoice</button>
+                            <button class="btn btn-success" onclick="recordPayment()"><i class="money-bill-wave"></i> Record Payment</button>
+                            <button class="btn btn-warning" onclick="sendReminders()"><i class="envelope"></i> Send Reminders</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cards-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Total Receivables</div>
+                                <i class="file-invoice" style="color: var(--warning);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="arTotal">42,560</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Overdue</div>
+                                <i class="exclamation-triangle" style="color: var(--danger);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="arOverdue">8,250</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Due This Week</div>
+                                <i class="calendar-week" style="color: var(--primary);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="arDueThisWeek">15,300</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Customers</div>
+                                <i class="user-friends" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-value"><span id="arCustomerCount">78</span></div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="arinvoices">Invoices</div>
+                        <div class="tab" data-tab="arcustomers">Customers</div>
+                        <div class="tab" data-tab="arcollections">Collections</div>
+                        <div class="tab" data-tab="araging">Aging Analysis</div>
+                    </div>
+
+                    <div class="tab-content active" id="arinvoicesTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Customer</th>
+                                        <th>Invoice No.</th>
+                                        <th>Date</th>
+                                        <th>Due Date</th>
+                                        <th>Amount</th>
+                                        <th>Balance</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="arTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fixed Assets -->
+            <div id="assetsContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="building"></i> Fixed Assets</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="addFixedAsset()"><i class="plus"></i> Add Asset</button>
+                            <button class="btn btn-success" onclick="runDepreciation()"><i class="calculator"></i> Run Depreciation</button>
+                            <button class="btn btn-outline" onclick="exportAssets()"><i class="file-export"></i> Export</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cards-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Total Assets Value</div>
+                                <i class="building" style="color: var(--primary);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="totalAssetsValue">250,000</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Accumulated Depreciation</div>
+                                <i class="chart-line" style="color: var(--warning);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="totalDepreciation">45,250</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Net Book Value</div>
+                                <i class="balance-scale" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="netBookValue">204,750</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Active Assets</div>
+                                <i class="boxes" style="color: var(--info);"></i>
+                            </div>
+                            <div class="card-value"><span id="activeAssetsCount">24</span></div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="assetslist">Assets List</div>
+                        <div class="tab" data-tab="depreciation">Depreciation Schedule</div>
+                        <div class="tab" data-tab="disposals">Asset Disposals</div>
+                    </div>
+
+                    <div class="tab-content active" id="assetslistTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Asset ID</th>
+                                        <th>Asset Name</th>
+                                        <th>Category</th>
+                                        <th>Purchase Date</th>
+                                        <th>Purchase Value</th>
+                                        <th>Current Value</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="assetsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bank & Reconciliation -->
+            <div id="bankContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-university"></i> Bank & Reconciliation</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="addBankAccount()"><i class="plus"></i> Add Bank Account</button>
+                            <button class="btn btn-success" onclick="importBankStatement()"><i class="file-import"></i> Import Statement</button>
+                            <button class="btn btn-info" onclick="reconcileAccount()"><i class="sync-alt"></i> Reconcile</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cards-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Total Bank Balance</div>
+                                <i class="university" style="color: var(--primary);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="totalBankBalance">125,420</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Unreconciled Items</div>
+                                <i class="exclamation-triangle" style="color: var(--warning);"></i>
+                            </div>
+                            <div class="card-value"><span id="unreconciledCount">18</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Last Reconciliation</div>
+                                <i class="fas fa-calendar-check" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-value" style="font-size: 1.2rem;"><span id="lastReconciliation">Oct 25, 2023</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Bank Accounts</div>
+                                <i class="credit-card" style="color: var(--info);"></i>
+                            </div>
+                            <div class="card-value"><span id="bankAccountsCount">4</span></div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="bankaccounts">Bank Accounts</div>
+                        <div class="tab" data-tab="transactions">Bank Transactions</div>
+                        <div class="tab" data-tab="reconciliation">Reconciliation</div>
+                    </div>
+
+                    <div class="tab-content active" id="bankaccountsTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Account Name</th>
+                                        <th>Bank Name</th>
+                                        <th>Account Number</th>
+                                        <th>Account Type</th>
+                                        <th>Current Balance</th>
+                                        <th>Last Updated</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bankAccountsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budgeting -->
+            <div id="budgetContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="chart-line"></i> Budgeting</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="createBudget()"><i class="plus"></i> Create Budget</button>
+                            <button class="btn btn-success" onclick="copyBudget()"><i class="copy"></i> Copy from Previous</button>
+                            <button class="btn btn-info" onclick="analyzeVariance()"><i class="chart-bar"></i> Variance Analysis</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cards-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Current Budget</div>
+                                <i class="calendar-alt" style="color: var(--primary);"></i>
+                            </div>
+                            <div class="card-value">Q4 2023</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Total Budget</div>
+                                <i class="dollar-sign" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-value">$ <span id="totalBudget">450,000</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Actual vs Budget</div>
+                                <i class="chart-pie" style="color: var(--warning);"></i>
+                            </div>
+                            <div class="card-value"><span id="budgetVariance">95.2%</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Over Budget Items</div>
+                                <i class="exclamation-circle" style="color: var(--danger);"></i>
+                            </div>
+                            <div class="card-value"><span id="overBudgetCount">3</span></div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="budgetplan">Budget Plan</div>
+                        <div class="tab" data-tab="budgetvsactual">Budget vs Actual</div>
+                        <div class="tab" data-tab="variancedetails">Variance Details</div>
+                    </div>
+
+                    <div class="tab-content active" id="budgetplanTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Account</th>
+                                        <th>Budget Amount</th>
+                                        <th>Actual Amount</th>
+                                        <th>Variance</th>
+                                        <th>% Used</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="budgetTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Reports -->
+            <div id="reportsContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="chart-bar"></i> Financial Reports</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="generateFinancialStatement('balancesheet')"><i class="invoice-dollar"></i> Balance Sheet</button>
+                            <button class="btn btn-success" onclick="generateFinancialStatement('incomestatement')"><i class="chart-line"></i> Income Statement</button>
+                            <button class="btn btn-info" onclick="generateFinancialStatement('cashflow')"><i class="money-bill-wave"></i> Cash Flow</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cards-container">
+                        <div class="card report-card">
+                            <div class="card-header">
+                                <div class="card-title"><i class="balance-scale"></i> Balance Sheet</div>
+                                <i class="download" style="color: var(--primary); cursor: pointer;" onclick="downloadReport('balancesheet')"></i>
+                            </div>
+                            <p>Snapshot of financial position at a specific date</p>
+                            <div class="card-trend">
+                                <i class="calendar"></i> As of Oct 31, 2023
+                            </div>
+                            <button class="btn btn-outline" onclick="viewReport('balancesheet')" style="margin-top: 15px;">View Report</button>
+                        </div>
+                        
+                        <div class="card report-card">
+                            <div class="card-header">
+                                <div class="card-title"><i class="chart-line"></i> Income Statement</div>
+                                <i class="download" style="color: var(--success); cursor: pointer;" onclick="downloadReport('incomestatement')"></i>
+                            </div>
+                            <p>Profit and loss for the period</p>
+                            <div class="card-trend">
+                                <i class="calendar"></i> Q3 2023
+                            </div>
+                            <button class="btn btn-outline" onclick="viewReport('incomestatement')" style="margin-top: 15px;">View Report</button>
+                        </div>
+                        
+                        <div class="card report-card">
+                            <div class="card-header">
+                                <div class="card-title"><i class="money-bill-wave"></i> Cash Flow</div>
+                                <i class="download" style="color: var(--info); cursor: pointer;" onclick="downloadReport('cashflow')"></i>
+                            </div>
+                            <p>Cash inflows and outflows</p>
+                            <div class="card-trend">
+                                <i class="calendar"></i> Year to Date
+                            </div>
+                            <button class="btn btn-outline" onclick="viewReport('cashflow')" style="margin-top: 15px;">View Report</button>
+                        </div>
+                        
+                        <div class="card report-card">
+                            <div class="card-header">
+                                <div class="card-title"><i class="chart-pie"></i> Financial Ratios</div>
+                                <i class="download" style="color: var(--warning); cursor: pointer;" onclick="downloadReport('ratios')"></i>
+                            </div>
+                            <p>Key performance indicators</p>
+                            <div class="card-trend">
+                                <i class="chart-bar"></i> 12 ratios calculated
+                            </div>
+                            <button class="btn btn-outline" onclick="viewReport('ratios')" style="margin-top: 15px;">View Report</button>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="balancesheet">Balance Sheet</div>
+                        <div class="tab" data-tab="incomestatement">Income Statement</div>
+                        <div class="tab" data-tab="cashflow">Cash Flow</div>
+                        <div class="tab" data-tab="ratios">Financial Ratios</div>
+                    </div>
+
+                    <div class="tab-content active" id="balancesheetTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center; background: var(--primary); color: white;">BALANCE SHEET</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center;">As of October 31, 2023</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="balanceSheetTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="incomestatementTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center; background: var(--success); color: white;">INCOME STATEMENT</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center;">For the Quarter Ended October 31, 2023</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="incomeStatementTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="cashflowTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center; background: var(--info); color: white;">STATEMENT OF CASH FLOWS</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center;">For the Quarter Ended October 31, 2023</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cashFlowTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="ratiosTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th colspan="3" style="text-align: center; background: var(--warning); color: white;">FINANCIAL RATIOS ANALYSIS</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3" style="text-align: center;">As of October 31, 2023</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Ratio</th>
+                                        <th>Value</th>
+                                        <th>Industry Benchmark</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ratiosTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Management -->
+            <div id="usersContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="users-cog"></i> User Management</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="addUser()"><i class="plus"></i> Add User</button>
+                            <button class="btn btn-success" onclick="manageRoles()"><i class="user-shield"></i> Manage Roles</button>
+                            <button class="btn btn-info" onclick="auditLogs()"><i class="history"></i> View Audit Logs</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cards-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Total Users</div>
+                                <i class="users" style="color: var(--primary);"></i>
+                            </div>
+                            <div class="card-value"><span id="totalUsers">8</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Active Users</div>
+                                <i class="user-check" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-value"><span id="activeUsers">7</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Inactive Users</div>
+                                <i class="user-slash" style="color: var(--danger);"></i>
+                            </div>
+                            <div class="card-value"><span id="inactiveUsers">1</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">User Roles</div>
+                                <i class="user-tag" style="color: var(--info);"></i>
+                            </div>
+                            <div class="card-value"><span id="userRolesCount">4</span></div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="userslist">Users List</div>
+                        <div class="tab" data-tab="roles">Roles & Permissions</div>
+                        <div class="tab" data-tab="audit">Audit Trail</div>
+                    </div>
+
+                    <div class="tab-content active" id="userslistTab">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>User ID</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Department</th>
+                                        <th>Last Login</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module Setup -->
+            <div id="setupContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="cogs"></i> Module Setup</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="saveSetup()"><i class="save"></i> Save Settings</button>
+                            <button class="btn btn-success" onclick="testConnection()"><i class="plug"></i> Test Connection</button>
+                            <button class="btn btn-info" onclick="backupConfig()"><i class="database"></i> Backup Config</button>
+                        </div>
+                    </div>
+                    
+                    <div class="workflow-steps">
+                        <div class="step completed">
+                            <i class="list-alt"></i>
+                            <div class="step-label">Chart of Accounts</div>
+                        </div>
+                        <div class="step completed">
+                            <i class="cog"></i>
+                            <div class="step-label">Financial Structure</div>
+                        </div>
+                        <div class="step active">
+                            <i class="users"></i>
+                            <div class="step-label">Business Partners</div>
+                        </div>
+                        <div class="step">
+                            <i class="exchange-alt"></i>
+                            <div class="step-label">Transaction Setup</div>
+                        </div>
+                        <div class="step">
+                            <i class="chart-bar"></i>
+                            <div class="step-label">Reporting</div>
+                        </div>
+                        <div class="step">
+                            <i class="user-shield"></i>
+                            <div class="step-label">Users & Permissions</div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" data-tab="generalsetup">General Setup</div>
+                        <div class="tab" data-tab="companysetup">Company Information</div>
+                        <div class="tab" data-tab="financialsetup">Financial Setup</div>
+                        <div class="tab" data-tab="integrations">Integrations</div>
+                    </div>
+
+                    <div class="tab-content active" id="generalsetupTab">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Fiscal Year Start</label>
+                                <select class="form-control" id="fiscalYearStart">
+                                    <option value="01">January</option>
+                                    <option value="04">April</option>
+                                    <option value="07">July</option>
+                                    <option value="10">October</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Base Currency</label>
+                                <select class="form-control" id="baseCurrency">
+                                    <option value="USD">USD - US Dollar</option>
+                                    <option value="EUR">EUR - Euro</option>
+                                    <option value="GBP">GBP - British Pound</option>
+                                    <option value="JPY">JPY - Japanese Yen</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Tax Identification Number</label>
+                            <input type="text" class="form-control" id="taxId" placeholder="Enter TAX ID">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Accounting Method</label>
+                            <select class="form-control" id="accountingMethod">
+                                <option value="accrual">Accrual Basis</option>
+                                <option value="cash">Cash Basis</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domain Comparison -->
+            <div id="comparisonContent" class="page-content" style="display: none;">
+                <div class="module-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="columns"></i> Domain Comparison</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="showDomainDetails('hotel')">Hotel</button>
+                            <button class="btn btn-primary" onclick="showDomainDetails('education')">Education</button>
+                            <button class="btn btn-primary" onclick="showDomainDetails('banking')">Banking</button>
+                            <button class="btn btn-primary" onclick="showDomainDetails('manufacturing')">Manufacturing</button>
+                        </div>
+                    </div>
+                    
+                    <div class="domain-comparison">
+                        <div class="domain-card domain-hotel">
+                            <h3><i class="hotel"></i> Hotel Industry</h3>
+                            <p><strong>Revenue Recognition:</strong> Daily room revenue, event bookings</p>
+                            <p><strong>Key Accounts:</strong> Rooms, F&B, Banquets</p>
+                            <p><strong>AP Focus:</strong> Many small vendors (suppliers, services)</p>
+                            <button class="btn btn-outline" style="margin-top: 10px;" onclick="applyDomainSettings('hotel')">Apply Settings</button>
+                        </div>
+                        
+                        <div class="domain-card domain-education">
+                            <h3><i class="graduation-cap"></i> Education Sector</h3>
+                            <p><strong>Revenue Recognition:</strong> Tuition fees, grants, research funds</p>
+                            <p><strong>Key Accounts:</strong> Fund accounting, grants, research</p>
+                            <p><strong>AP Focus:</strong> Faculty payments, infrastructure</p>
+                            <button class="btn btn-outline" style="margin-top: 10px;" onclick="applyDomainSettings('education')">Apply Settings</button>
+                        </div>
+                        
+                        <div class="domain-card domain-banking">
+                            <h3><i class="university"></i> Banking</h3>
+                            <p><strong>Revenue Recognition:</strong> Interest income, fees, commissions</p>
+                            <p><strong>Key Accounts:</strong> Regulatory structure, provisions</p>
+                            <p><strong>AP Focus:</strong> Few large vendors, interbank</p>
+                            <button class="btn btn-outline" style="margin-top: 10px;" onclick="applyDomainSettings('banking')">Apply Settings</button>
+                        </div>
+                        
+                        <div class="domain-card domain-manufacturing">
+                            <h3><i class="industry"></i> Manufacturing</h3>
+                            <p><strong>Revenue Recognition:</strong> Product sales, service contracts</p>
+                            <p><strong>Key Accounts:</strong> Cost centers by product line</p>
+                            <p><strong>AP Focus:</strong> Raw material suppliers, MRO</p>
+                            <button class="btn btn-outline" style="margin-top: 10px;" onclick="applyDomainSettings('manufacturing')">Apply Settings</button>
+                        </div>
+                    </div>
+                    
+                    <div id="domainDetails" style="margin-top: 30px; display: none;">
+                        <h3 id="domainDetailsTitle"></h3>
+                        <div id="domainDetailsContent"></div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- Chart of Accounts Modal -->
+    <div class="modal" id="addAccountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Account to Chart of Accounts</h3>
+                <button class="close-btn" onclick="closeModal('addAccountModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addAccountForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Account Code *</label>
+                            <input type="text" class="form-control" id="accountCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Parent Account</label>
+                            <select class="form-control" id="parentAccount">
+                                <option value="">No Parent (Top Level)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Account Name *</label>
+                        <input type="text" class="form-control" id="accountName" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Account Type *</label>
+                            <select class="form-control" id="accountType" required>
+                                <option value="">Select Type</option>
+                                <option value="Asset">Asset</option>
+                                <option value="Liability">Liability</option>
+                                <option value="Equity">Equity</option>
+                                <option value="Revenue">Revenue</option>
+                                <option value="Expense">Expense</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sub-Type</label>
+                            <select class="form-control" id="accountSubType">
+                                <option value="">Select Sub-Type</option>
+                                <option value="Current Asset">Current Asset</option>
+                                <option value="Fixed Asset">Fixed Asset</option>
+                                <option value="Current Liability">Current Liability</option>
+                                <option value="Long-term Liability">Long-term Liability</option>
+                                <option value="Operating Revenue">Operating Revenue</option>
+                                <option value="Non-operating Revenue">Non-operating Revenue</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Opening Balance</label>
+                            <input type="number" class="form-control" id="accountBalance" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Currency</label>
+                            <select class="form-control" id="accountCurrency">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="accountDescription" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="accountActive" checked> Active Account
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('addAccountModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveAccount()">Save Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal Entry Modal -->
+    <div class="modal" id="journalEntryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Journal Entry</h3>
+                <button class="close-btn" onclick="closeModal('journalEntryModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="journalEntryForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Entry Date *</label>
+                            <input type="date" class="form-control" id="journalDate" required value="2023-10-31">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Journal Type</label>
+                            <select class="form-control" id="journalType">
+                                <option value="General">General Journal</option>
+                                <option value="Sales">Sales Journal</option>
+                                <option value="Purchase">Purchase Journal</option>
+                                <option value="Cash">Cash Journal</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description *</label>
+                        <input type="text" class="form-control" id="journalDescription" required placeholder="Enter journal entry description">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Reference Number</label>
+                        <input type="text" class="form-control" id="journalReference" placeholder="Optional reference">
+                    </div>
+                    
+                    <h4>Journal Lines</h4>
+                    <div id="journalLines">
+                        <div class="journal-line" style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
+                            <select class="form-control" style="flex: 2;" onchange="updateAccountBalance(this)">
+                                <option value="">Select Account</option>
+                            </select>
+                            <input type="number" class="form-control" placeholder="Debit" style="flex: 1;" onchange="updateDebitCredit()" step="0.01">
+                            <input type="number" class="form-control" placeholder="Credit" style="flex: 1;" onchange="updateDebitCredit()" step="0.01">
+                            <input type="text" class="form-control" placeholder="Line Description" style="flex: 2;">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeJournalLine(this)"><i class="times"></i></button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-outline" onclick="addJournalLine()"><i class="plus"></i> Add Line</button>
+                    
+                    <div style="margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Total Debit</label>
+                                <input type="text" class="form-control" id="totalDebit" value="0.00" readonly style="font-weight: bold; color: var(--success);">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Total Credit</label>
+                                <input type="text" class="form-control" id="totalCredit" value="0.00" readonly style="font-weight: bold; color: var(--success);">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Difference</label>
+                                <input type="text" class="form-control" id="debitCreditDiff" value="0.00" readonly style="font-weight: bold; color: var(--danger);">
+                            </div>
+                        </div>
+                        <div id="balanceStatus" style="text-align: center; padding: 10px; display: none;"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('journalEntryModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveJournalEntry()">Save Journal Entry</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Invoice Modal -->
+    <div class="modal" id="addInvoiceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Invoice</h3>
+                <button class="close-btn" onclick="closeModal('addInvoiceModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addInvoiceForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Vendor *</label>
+                            <select class="form-control" id="invoiceVendor" required>
+                                <option value="">Select Vendor</option>
+                                <option value="Office Supplies Ltd">Office Supplies Ltd</option>
+                                <option value="Tech Solutions Inc">Tech Solutions Inc</option>
+                                <option value="Utilities Corp">Utilities Corp</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Invoice Number *</label>
+                            <input type="text" class="form-control" id="invoiceNumber" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Invoice Date *</label>
+                            <input type="date" class="form-control" id="invoiceDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Due Date *</label>
+                            <input type="date" class="form-control" id="invoiceDueDate" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Amount *</label>
+                        <input type="number" class="form-control" id="invoiceAmount" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="invoiceDescription" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Account</label>
+                        <select class="form-control" id="invoiceAccount">
+                            <option value="">Select Account</option>
+                            <option value="Accounts Payable">Accounts Payable</option>
+                            <option value="Office Supplies Expense">Office Supplies Expense</option>
+                            <option value="Utilities Expense">Utilities Expense</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('addInvoiceModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveInvoice()">Save Invoice</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Menu Dropdown -->
+    <div id="userMenu" style="display: none; position: fixed; top: 70px; right: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px;">
+        <div style="padding: 20px; border-bottom: 1px solid #eee;">
+            <div style="font-weight: 600; color: #333;">Admin User</div>
+            <div style="font-size: 0.9rem; color: #666;">admin@company.com</div>
+        </div>
+        <div style="padding: 10px 0;">
+            <a href="#" style="display: block; padding: 12px 20px; color: #333; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='#f5f5f5'">
+                <i class="user" style="width: 20px; margin-right: 10px;"></i> My Profile
+            </a>
+            <a href="#" style="display: block; padding: 12px 20px; color: #333; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='#f5f5f5'">
+                <i class="cog" style="width: 20px; margin-right: 10px;"></i> Settings
+            </a>
+            <a href="#" style="display: block; padding: 12px 20px; color: #333; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='#f5f5f5'">
+                <i class="lock" style="width: 20px; margin-right: 10px;"></i> Change Password
+            </a>
+            <div style="border-top: 1px solid #eee; margin-top: 10px;"></div>
+            <a href="#" style="display: block; padding: 12px 20px; color: #d32f2f; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='#ffebee'">
+                <i class="sign-out-alt" style="width: 20px; margin-right: 10px;"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div id="notificationsPanel" style="display: none; position: fixed; top: 70px; right: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); z-index: 1000; width: 350px; max-height: 400px; overflow-y: auto;">
+        <div style="padding: 20px; border-bottom: 1px solid #eee;">
+            <h3 style="color: var(--primary);">Notifications</h3>
+        </div>
+        <div id="notificationsList" style="padding: 15px;">
+            <!-- Notifications will be dynamically added here -->
+        </div>
+        <div style="padding: 15px; border-top: 1px solid #eee; text-align: center;">
+            <button class="btn btn-outline" onclick="clearAllNotifications()">Clear All</button>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 
