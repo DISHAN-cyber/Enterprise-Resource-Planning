@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: finance-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/erp_db
+    username: postgres
+    password: shayon7946
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+# Change port to 8081 to avoid conflicts
+server:
+  port: 8081
+  servlet:
+    context-path: /api/finance
+
+# Update logging package
+logging:
+  level:
+    '[com.erp.finance]': DEBUG
