@@ -1,4 +1,17 @@
 {
     "git.ignoreLimitWarning": true,
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+
+    "files.watcherExclude": {
+        "**/node_modules/**": true,
+        "**/target/**": true,
+        "**/.git/**": true
+    },
+
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/target": true
+    },
+
+    "typescript.tsserver.maxTsServerMemory": 1024
 }
