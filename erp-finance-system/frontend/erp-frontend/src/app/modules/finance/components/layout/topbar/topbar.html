@@ -1,0 +1,60 @@
+<div class="topbar">
+  <div class="page-title">
+    <h1>{{ pageTitle }}</h1>
+    <div class="subtitle">{{ finance.getDomainLabel(finance.currentDomain) }}</div>
+  </div>
+
+  <div class="user-actions">
+    <div class="notification" (click)="toggleNotifications($event)">
+      <i class="fas fa-bell" style="font-size: 1.3rem; color: #666;"></i>
+      <span class="notification-badge">{{ finance.notifications.length }}</span>
+    </div>
+
+    <select class="form-control filter-dropdown" [(ngModel)]="finance.currentDomain" (ngModelChange)="changeDomain($event)">
+      <option value="general">General Business</option>
+      <option value="hotel">Hotel Industry</option>
+      <option value="education">Education Sector</option>
+      <option value="banking">Banking</option>
+      <option value="manufacturing">Manufacturing</option>
+    </select>
+
+    <div class="user-profile" (click)="toggleUserMenu()">
+      <div class="user-avatar">{{ finance.currentUser.name.split(' ').map(part => part[0]).join('').slice(0, 2) }}</div>
+      <div class="user-info">
+        <h4>{{ finance.currentUser.name }}</h4>
+        <p>{{ finance.currentUser.role }}</p>
+      </div>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </div>
+
+  <div class="notifications-panel" [class.active]="notificationsOpen">
+    <div class="panel-header">
+      <h3>Notifications</h3>
+    </div>
+    <div class="panel-content">
+      <div *ngIf="finance.notifications.length === 0" class="empty-state">No notifications</div>
+      <div *ngFor="let notification of finance.notifications" class="notification-item">
+        <div class="notification-title">{{ notification.title }}</div>
+        <div class="notification-message">{{ notification.message }}</div>
+        <div class="notification-timestamp">{{ notification.timestamp }}</div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-outline" (click)="finance.notifications = []; finance.saveToLocalStorage();">Clear All</button>
+    </div>
+  </div>
+
+  <div class="user-menu" [class.open]="userMenuOpen">
+    <div class="user-menu-header">
+      <div>{{ finance.currentUser.name }}</div>
+      <div class="user-menu-email">{{ finance.currentUser.email }}</div>
+    </div>
+    <a href="#" (click)="goToProfile(); $event.preventDefault()">My Profile</a>
+    <a href="#" (click)="goToSettings(); $event.preventDefault()">Settings</a>
+    <a href="#" (click)="goToChangePassword(); $event.preventDefault()">Change Password</a>
+    <div class="divider"></div>
+    <a href="#" class="logout" (click)="logout(); $event.preventDefault()">Logout</a>
+  </div>
+</div>
+

@@ -1,0 +1,110 @@
+name: Scheduled Model Retrain
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # daily at 02:00 UTC
+  workflow_dispatch:
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ai-service/requirements.txt awscli
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Sync stored models and data from configured cloud storage
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          AZURE_STORAGE_CONTAINER: ${{ secrets.AZURE_STORAGE_CONTAINER }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+        run: |
+          python -m app.scripts.cloud_sync --download-models --download-data --models-dir ai-service/stored_models --data-dir ai-service/data
+        working-directory: ai-service
+
+      - name: Determine previous model path (if any)
+        id: prev_model
+        run: |
+          python - <<'PY'
+import json, os
+idx = 'ai-service/stored_models/index.json'
+if os.path.exists(idx):
+    j=json.load(open(idx))
+    models=j.get('models',[])
+    if models:
+        print(models[-1]['file'])
+        exit(0)
+print('')
+exit(0)
+PY
+
+      - name: Run retrain if data present
+        run: |
+          if [ -f ai-service/data/transactions.csv ]; then
+            python -m app.scripts.retrain_model ai-service/data/transactions.csv --version "${{ github.run_id }}"
+          else
+            echo "No training data found at ai-service/data/transactions.csv; skipping retrain."
+          fi
+        working-directory: ai-service
+
+      - name: Upload stored models and data to configured cloud storage
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          AZURE_STORAGE_CONTAINER: ${{ secrets.AZURE_STORAGE_CONTAINER }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+        run: |
+          python -m app.scripts.cloud_sync --upload-models --upload-data --models-dir ai-service/stored_models --data-dir ai-service/data
+        working-directory: ai-service
+
+      - name: Evaluate new model (compare with previous)
+        id: evaluate
+        run: |
+          PREV_PATH=""
+          if [ -f ai-service/stored_models/index.json ]; then
+            PREV_FILE=$(jq -r '.models[-2].file // empty' ai-service/stored_models/index.json)
+            if [ -n "$PREV_FILE" ]; then
+              PREV_PATH="ai-service/stored_models/$PREV_FILE"
+            fi
+          fi
+          python -m app.scripts.evaluate_model --data ai-service/data/validation.csv ${PREV_PATH:+--prev-file $PREV_PATH} --threshold 0.2 > eval_out.json || true
+          cat eval_out.json
+        working-directory: ai-service
+
+      - name: Send Slack alert if degraded
+        if: always()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: |
+          if [ -f ai-service/eval_out.json ]; then
+            DEGRADED=$(jq -r '.degraded // false' ai-service/eval_out.json)
+            if [ "$DEGRADED" = "true" ]; then
+              TEXT="Model retrain run ${{ github.run_id }} reported degradation: $(jq -c . ai-service/eval_out.json)"
+              curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"$TEXT\"}" "$SLACK_WEBHOOK" || true
+            else
+              echo "No degradation detected."
+            fi
+          else
+            echo "No evaluation output found; skipping alert."
+          fi

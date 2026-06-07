@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #eff2fb;
+  color: #111827;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.toggle-sidebar {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1200;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 14px;
+  background: #1a237e;
+  color: #ffffff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+  cursor: pointer;
+}
+
+.main-content {
+  margin-left: 260px;
+  padding: 120px 30px 30px;
+  max-width: calc(100% - 260px);
+  width: 100%;
+  transition: margin-left 0.3s ease, max-width 0.3s ease;
+}
+
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 120px 24px 24px;
+    max-width: calc(100% - 260px);
+  }
+}
+
+@media (max-width: 992px) {
+  .toggle-sidebar {
+    display: flex;
+  }
+
+  .main-content {
+    margin-left: 0;
+    max-width: 100%;
+    padding: 120px 18px 18px;
+  }
+}

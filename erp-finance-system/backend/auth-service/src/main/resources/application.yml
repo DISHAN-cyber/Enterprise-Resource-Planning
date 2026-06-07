@@ -1,0 +1,114 @@
+server:
+  port: 8081  # Auth service runs on port 8081
+
+spring:
+  application:
+    name: auth-service
+  
+  # PostgreSQL Database Configuration
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/erp_auth_db
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:shayon7946}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+  
+  # JPA/Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Use 'validate' in prod, 'update' only for dev
+    show-sql: ${SHOW_SQL:false}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        use_sql_comments: false
+  
+  # Flyway Database Migration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+  
+  # Jackson JSON Configuration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+
+# JWT Configuration (matching JwtTokenProvider.java)
+jwt:
+  secret: ${JWT_SECRET:YourSuperSecure256BitSecretKeyHere1234567890!@#$%^&*}
+  expiration: 86400000            # 24 hours in milliseconds
+  refresh-expiration: 604800000   # 7 days in milliseconds
+  token-prefix: "Bearer"
+  header: "Authorization"
+
+# CORS Configuration for Angular Frontend
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:4200,http://127.0.0.1:4200}
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
+  allowed-headers: "*"
+  exposed-headers: Authorization,Content-Type
+  max-age: 3600
+  allow-credentials: true
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.erp.auth: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: ${LOG_SQL:false}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Actuator (Health Checks) - Optional but recommended
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Profile-specific overrides
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+logging:
+  level:
+    com.erp.auth: DEBUG
+    org.hibernate.SQL: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    validate-on-migrate: true
+logging:
+  level:
+    root: WARN
+    com.erp.auth: INFO
+
+app:
+  frontend-url: ${FRONTEND_URL:http://localhost:4200}
+  reset-token-expiration: 3600  # 1 hour in seconds

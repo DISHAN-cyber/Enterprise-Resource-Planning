@@ -1,0 +1,17 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: finance-core-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/erp_finance_db
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:shayon7946}
+
+jwt:
+  secret: ${JWT_SECRET:YourSuperSecure256BitSecretKeyHere1234567890!@#$%^&*}
+
+# Security config
+security:
+  ignored-paths: /actuator/**, /api/health

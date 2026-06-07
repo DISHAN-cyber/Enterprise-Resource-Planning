@@ -1,0 +1,1070 @@
+<div class="content-area">
+  <ng-container [ngSwitch]="currentPage">
+    <!-- Dashboard -->
+    <div *ngSwitchCase="'dashboard'">
+      <div class="cards-container">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-dollar-sign"></i> Total Revenue</div>
+            <i class="fas fa-chart-line" style="color: var(--success);"></i>
+          </div>
+          <div class="card-value">{{ finance.formatCurrency(finance.financialData.revenue) }}</div>
+          <div class="card-trend positive">
+            <i class="fas fa-arrow-up"></i> 12.5% vs last month
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-file-invoice"></i> Accounts Receivable</div>
+            <i class="fas fa-exclamation-circle" style="color: var(--warning);"></i>
+          </div>
+          <div class="card-value">{{ finance.formatCurrency(finance.financialData.accountsReceivable) }}</div>
+          <div class="card-trend negative">
+            <i class="fas fa-arrow-up"></i> 8.2% overdue
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-file-invoice-dollar"></i> Accounts Payable</div>
+            <i class="fas fa-clock" style="color: var(--danger);"></i>
+          </div>
+          <div class="card-value">{{ finance.formatCurrency(finance.financialData.accountsPayable) }}</div>
+          <div class="card-trend positive">
+            <i class="fas fa-arrow-down"></i> 15.3% decrease
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-university"></i> Cash Balance</div>
+            <i class="fas fa-wallet" style="color: var(--primary);"></i>
+          </div>
+          <div class="card-value">{{ finance.formatCurrency(finance.financialData.cashBalance) }}</div>
+          <div class="card-trend positive">
+            <i class="fas fa-arrow-up"></i> 5.8% increase
+          </div>
+        </div>
+      </div>
+
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-chart-line"></i> Financial Overview</h2>
+          <div class="section-actions">
+            <select class="form-control" [(ngModel)]="chartPeriod" style="width: 150px;" (ngModelChange)="updateFinancialChart()">
+              <option value="30">Last 30 Days</option>
+              <option value="90">Last Quarter</option>
+              <option value="365">Last Year</option>
+              <option value="ytd">Year to Date</option>
+            </select>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="financialChart"></canvas>
+        </div>
+      </div>
+
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-tasks"></i> Pending Actions</h2>
+          <button class="btn btn-primary" (click)="markAllComplete()">Mark All Complete</button>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Module</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let action of pendingActions">
+                <td>{{ action.action }}</td>
+                <td>{{ action.module }}</td>
+                <td><span class="badge" [ngClass]="action.priority === 'High' ? 'badge-danger' : 'badge-warning'">{{ action.priority }}</span></td>
+                <td>{{ action.dueDate }}</td>
+                <td><span class="badge badge-warning">{{ action.status }}</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline" (click)="completeAction(action.action)">
+                    <i class="fas fa-check"></i> Complete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div *ngSwitchCase="'profile'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-user"></i> My Profile</h2>
+        </div>
+        <div class="form-grid profile-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control" [(ngModel)]="profileForm.displayName" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" [(ngModel)]="profileForm.email" />
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" class="form-control" [(ngModel)]="profileForm.phone" />
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <input type="text" class="form-control" [value]="finance.currentUser.role" disabled />
+          </div>
+          <div class="form-group">
+            <label>Department</label>
+            <input type="text" class="form-control" [value]="finance.currentUser.department" disabled />
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn btn-primary" (click)="saveProfile()">Save Settings</button>
+        </div>
+        <div class="message success" *ngIf="profileMessage">{{ profileMessage }}</div>
+        <div class="message error" *ngIf="profileError">{{ profileError }}</div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'settings'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-cogs"></i> Settings</h2>
+        </div>
+        <div class="form-grid profile-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control" [(ngModel)]="profileForm.displayName" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" [(ngModel)]="profileForm.email" />
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" class="form-control" [(ngModel)]="profileForm.phone" />
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn btn-primary" (click)="saveProfile()">Update Profile</button>
+        </div>
+        <div class="message success" *ngIf="profileMessage">{{ profileMessage }}</div>
+        <div class="message error" *ngIf="profileError">{{ profileError }}</div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'change-password'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-key"></i> Change Password</h2>
+        </div>
+        <div class="form-grid password-grid">
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" class="form-control" [(ngModel)]="passwordForm.currentPassword" />
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" class="form-control" [(ngModel)]="passwordForm.newPassword" />
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" class="form-control" [(ngModel)]="passwordForm.confirmPassword" />
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn btn-primary" (click)="changePassword()">Change Password</button>
+        </div>
+        <div class="message success" *ngIf="passwordMessage">{{ passwordMessage }}</div>
+        <div class="message error" *ngIf="passwordError">{{ passwordError }}</div>
+      </div>
+    </div>
+
+    <!-- Chart of Accounts -->
+    <div *ngSwitchCase="'coa'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-list-alt"></i> Chart of Accounts</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary" (click)="openAddAccountModal()"><i class="fas fa-plus"></i> Add Account</button>
+            <button class="btn btn-success" (click)="exportCOA()"><i class="fas fa-file-download"></i> Export</button>
+            <button class="btn btn-info" (click)="loadSampleCOA()"><i class="fas fa-download"></i> Load Sample</button>
+          </div>
+        </div>
+
+        <div class="search-filter">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search accounts..." [(ngModel)]="coaSearchTerm" />
+          </div>
+          <select class="form-control filter-dropdown" [(ngModel)]="coaTypeFilter">
+            <option value="all">All Types</option>
+            <option value="Asset">Asset</option>
+            <option value="Liability">Liability</option>
+            <option value="Equity">Equity</option>
+            <option value="Revenue">Revenue</option>
+            <option value="Expense">Expense</option>
+          </select>
+          <select class="form-control filter-dropdown" [(ngModel)]="coaStatusFilter">
+            <option value="all">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="tabs">
+          <div class="tab" [ngClass]="{ active: coaTab === 'accounts' }" (click)="toggleSection('accounts', 'coa')">Accounts List</div>
+          <div class="tab" [ngClass]="{ active: coaTab === 'hierarchy' }" (click)="toggleSection('hierarchy', 'coa')">Account Hierarchy</div>
+          <div class="tab" [ngClass]="{ active: coaTab === 'balances' }" (click)="toggleSection('balances', 'coa')">Account Balances</div>
+        </div>
+
+        <div class="tab-content" [ngClass]="{ active: coaTab === 'accounts' }">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Account Code</th>
+                  <th>Account Name</th>
+                  <th>Type</th>
+                  <th>Sub-Type</th>
+                  <th>Balance</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let account of filteredCOA">
+                  <td><strong>{{ account.code }}</strong></td>
+                  <td>{{ account.name }}</td>
+                  <td><span class="badge" [ngClass]="finance.getAccountTypeBadge(account.type)">{{ account.type }}</span></td>
+                  <td>{{ account.subType || '-' }}</td>
+                  <td>{{ finance.formatCurrency(account.balance) }}</td>
+                  <td><span class="badge" [ngClass]="account.status === 'Active' ? 'badge-success' : 'badge-danger'">{{ account.status }}</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" (click)="openAddAccountModal(account)"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-outline" (click)="toggleAccountStatus(account)"><i class="fas" [class.fa-ban]="account.status === 'Active'" [class.fa-check]="account.status !== 'Active'"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-content" [ngClass]="{ active: coaTab === 'hierarchy' }">
+          <div class="bank-card">
+            <h3>Account Hierarchy</h3>
+            <div *ngFor="let type of accountTypes" style="margin-bottom: 20px;">
+              <h4 style="color: var(--primary); margin-bottom: 10px;"><i class="fas fa-folder"></i> {{ type }} Accounts</h4>
+              <div *ngFor="let account of getAccountsByType(type)" style="display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee;">
+                <div style="width: 100px; font-weight: 600;">{{ account.code }}</div>
+                <div style="flex: 1;">{{ account.name }}</div>
+                <div style="width: 120px; text-align: right;">{{ finance.formatCurrency(account.balance) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" [ngClass]="{ active: coaTab === 'balances' }">
+          <div class="chart-container">
+            <canvas id="coaBalanceChart"></canvas>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Account Type</th>
+                  <th>Number of Accounts</th>
+                  <th>Total Balance</th>
+                  <th>Percentage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let type of accountTypes">
+                  <td>{{ type }}</td>
+                  <td>{{ getAccountCountByType(type) }}</td>
+                  <td>{{ finance.formatCurrency(getAccountBalanceByType(type)) }}</td>
+                  <td>
+                    <div style="display: flex; align-items: center;">
+                      <div style="width: 100px; height: 8px; background: #eee; border-radius: 4px; margin-right: 10px;">
+                        <div [style.width]="getAccountBalancePct(type) + '%'" style="height: 100%; background: var(--primary); border-radius: 4px;"></div>
+                      </div>
+                      {{ getAccountBalancePct(type) | number:'1.0-1' }}%
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- General Ledger -->
+    <div *ngSwitchCase="'gl'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-book"></i> General Ledger</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary" (click)="showJournalEntryModalFlag = true"><i class="fas fa-plus"></i> Add Journal Entry</button>
+            <button class="btn btn-success" (click)="postAllEntries()"><i class="fas fa-check-circle"></i> Post All Entries</button>
+            <button class="btn btn-info" (click)="runMonthEndClose()"><i class="fas fa-calendar-check"></i> Month-End Close</button>
+          </div>
+        </div>
+
+        <div class="cards-container">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Total Journal Entries</div>
+              <i class="fas fa-file-alt" style="color: var(--primary);"></i>
+            </div>
+            <div class="card-value">{{ finance.journalEntries.length }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Unposted Entries</div>
+              <i class="fas fa-clock" style="color: var(--warning);"></i>
+            </div>
+            <div class="card-value">{{ getJournalUnpostedCount() }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">This Month</div>
+              <i class="fas fa-calendar-alt" style="color: var(--info);"></i>
+            </div>
+            <div class="card-value">{{ getJournalCurrentMonthCount() }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Debit/Credit Balance</div>
+              <i class="fas fa-balance-scale" style="color: var(--success);"></i>
+            </div>
+            <div class="card-value">{{ finance.formatCurrency(getTotalJournalDebits()) }} / {{ finance.formatCurrency(getTotalJournalCredits()) }}</div>
+          </div>
+        </div>
+
+        <div class="workflow-steps">
+          <div class="step completed"><i class="fas fa-plus"></i><div class="step-label">Create Entry</div></div>
+          <div class="step active"><i class="fas fa-eye"></i><div class="step-label">Review</div></div>
+          <div class="step"><i class="fas fa-check"></i><div class="step-label">Approve</div></div>
+          <div class="step"><i class="fas fa-book"></i><div class="step-label">Post to GL</div></div>
+        </div>
+
+        <div class="tabs">
+          <div class="tab" [ngClass]="{ active: glTab === 'journals' }" (click)="toggleSection('journals', 'gl')">Journal Entries</div>
+          <div class="tab" [ngClass]="{ active: glTab === 'trialbalance' }" (click)="toggleSection('trialbalance', 'gl')">Trial Balance</div>
+          <div class="tab" [ngClass]="{ active: glTab === 'ledger' }" (click)="toggleSection('ledger', 'gl')">Ledger Details</div>
+          <div class="tab" [ngClass]="{ active: glTab === 'closing' }" (click)="toggleSection('closing', 'gl')">Period Closing</div>
+        </div>
+
+        <div class="tab-content" [ngClass]="{ active: glTab === 'journals' }">
+          <div class="search-filter">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" class="form-control" placeholder="Search journal entries..." [(ngModel)]="journalSearchTerm" />
+            </div>
+            <select class="form-control filter-dropdown" [(ngModel)]="journalStatusFilter">
+              <option value="all">All Status</option>
+              <option value="Draft">Draft</option>
+              <option value="Pending">Pending</option>
+              <option value="Posted">Posted</option>
+            </select>
+            <input type="date" class="form-control filter-dropdown" [(ngModel)]="journalDateFilter" />
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Journal No.</th>
+                  <th>Description</th>
+                  <th>Debit Total</th>
+                  <th>Credit Total</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let entry of filteredJournals">
+                  <td>{{ entry.date }}</td>
+                  <td><strong>{{ entry.journalNo }}</strong></td>
+                  <td>{{ entry.description }}</td>
+                  <td>{{ finance.formatCurrency(entry.totalDebit) }}</td>
+                  <td>{{ finance.formatCurrency(entry.totalCredit) }}</td>
+                  <td><span class="badge" [ngClass]="finance.getJournalStatusBadge(entry.status)">{{ entry.status }}</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" (click)="viewJournal(entry)"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-sm btn-outline" (click)="postJournalEntry(entry)" [disabled]="entry.status === 'Posted'"><i class="fas fa-check"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-content" [ngClass]="{ active: glTab === 'trialbalance' }">
+          <div class="chart-container">
+            <canvas id="trialBalanceChart"></canvas>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Account Code</th>
+                  <th>Account Name</th>
+                  <th>Debit Balance</th>
+                  <th>Credit Balance</th>
+                  <th>Net Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let account of finance.chartOfAccounts">
+                  <td>{{ account.code }}</td>
+                  <td>{{ account.name }}</td>
+                  <td>{{ account.type === 'Asset' || account.type === 'Expense' ? finance.formatCurrency(account.balance) : '-' }}</td>
+                  <td>{{ account.type === 'Liability' || account.type === 'Equity' || account.type === 'Revenue' ? finance.formatCurrency(account.balance) : '-' }}</td>
+                  <td><strong>{{ finance.formatCurrency(account.type === 'Asset' || account.type === 'Expense' ? account.balance : -account.balance) }}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-content" [ngClass]="{ active: glTab === 'ledger' }">
+          <div class="search-filter">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" class="form-control" placeholder="Search ledger entries..." />
+            </div>
+            <select class="form-control filter-dropdown">
+              <option value="">Select Account</option>
+              <option *ngFor="let account of finance.chartOfAccounts" [value]="account.name">{{ account.name }}</option>
+            </select>
+            <input type="date" class="form-control filter-dropdown" />
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Account</th>
+                  <th>Journal No.</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                  <th>Balance</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let entry of finance.journalEntries">
+                  <td>{{ entry.date }}</td>
+                  <td>{{ entry.lines[0]?.account || '-' }}</td>
+                  <td>{{ entry.journalNo }}</td>
+                  <td>{{ finance.formatCurrency(entry.totalDebit) }}</td>
+                  <td>{{ finance.formatCurrency(entry.totalCredit) }}</td>
+                  <td>{{ finance.formatCurrency(entry.totalDebit - entry.totalCredit) }}</td>
+                  <td>{{ entry.description }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-content" [ngClass]="{ active: glTab === 'closing' }">
+          <div class="bank-card">
+            <h3>Period Closing Process</h3>
+            <p>Run month-end or year-end closing procedures</p>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Closing Period</label>
+                <select class="form-control">
+                  <option value="month">Month-End</option>
+                  <option value="quarter">Quarter-End</option>
+                  <option value="year">Year-End</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Closing Date</label>
+                <input type="date" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Closing Tasks</label>
+              <div class="form-check"><input type="checkbox" class="form-check-input" checked /> <label class="form-check-label">Close Sub-ledgers (AP/AR)</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" checked /> <label class="form-check-label">Run Depreciation</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" checked /> <label class="form-check-label">Post Accruals & Adjustments</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" checked /> <label class="form-check-label">Reconcile Accounts</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" checked /> <label class="form-check-label">Generate Financial Reports</label></div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+              <button class="btn btn-success" (click)="runMonthEndClose()">Run Closing Process</button>
+              <button class="btn btn-outline">Reverse Last Closing</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accounts Payable -->
+    <div *ngSwitchCase="'ap'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-file-invoice-dollar"></i> Accounts Payable</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary" (click)="showInvoiceModalFlag = true"><i class="fas fa-plus"></i> Add Invoice</button>
+            <button class="btn btn-success" (click)="processBatchPayments()"><i class="fas fa-money-check"></i> Process Payments</button>
+            <button class="btn btn-outline">Export</button>
+          </div>
+        </div>
+        <div class="search-filter">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search invoices, vendors..." [(ngModel)]="apSearchTerm" />
+          </div>
+          <select class="form-control filter-dropdown" [(ngModel)]="apStatusFilter">
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="overdue">Overdue</option>
+            <option value="paid">Paid</option>
+          </select>
+          <select class="form-control filter-dropdown" [(ngModel)]="apVendorFilter">
+            <option value="all">All Vendors</option>
+            <option *ngFor="let vendor of filteredAPVendors" [value]="vendor">{{ vendor }}</option>
+          </select>
+        </div>
+        <div class="cards-container">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Total Due</div>
+              <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
+            </div>
+            <div class="card-value">{{ finance.formatCurrency(getTotalInvoiceDue()) }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Overdue</div>
+              <i class="fas fa-clock" style="color: var(--warning);"></i>
+            </div>
+            <div class="card-value">{{ finance.formatCurrency(getTotalInvoiceOverdue()) }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Due This Week</div>
+              <i class="fas fa-calendar-week" style="color: var(--primary);"></i>
+            </div>
+            <div class="card-value">{{ finance.formatCurrency(getTotalInvoiceDueThisWeek()) }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Vendors</div>
+              <i class="fas fa-users" style="color: var(--success);"></i>
+            </div>
+            <div class="card-value">{{ filteredAPVendors.length }}</div>
+          </div>
+        </div>
+        <div class="tabs">
+          <div class="tab active">Invoices</div>
+          <div class="tab">Vendors</div>
+          <div class="tab">Payment History</div>
+          <div class="tab">Aging Analysis</div>
+        </div>
+        <div class="tab-content active">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Vendor</th>
+                  <th>Invoice No.</th>
+                  <th>Due Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let invoice of filteredAPInvoices">
+                  <td>{{ invoice.vendor }}</td>
+                  <td>{{ invoice.invoiceNo }}</td>
+                  <td>{{ invoice.dueDate }}</td>
+                  <td>{{ finance.formatCurrency(invoice.amount) }}</td>
+                  <td><span class="badge" [ngClass]="invoice.status === 'Overdue' ? 'badge-danger' : 'badge-warning'">{{ invoice.status }}</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline" (click)="payInvoice(invoice)"><i class="fas fa-money-bill-wave"></i></button>
+                    <button class="btn btn-sm btn-outline" (click)="viewInvoice(invoice)"><i class="fas fa-eye"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accounts Receivable -->
+    <div *ngSwitchCase="'ar'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-hand-holding-usd"></i> Accounts Receivable</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary" (click)="showInvoiceModalFlag = true"><i class="fas fa-plus"></i> Create Invoice</button>
+            <button class="btn btn-success">Record Payment</button>
+            <button class="btn btn-warning">Send Reminders</button>
+          </div>
+        </div>
+        <div class="cards-container">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Total Receivables</div><i class="fas fa-file-invoice" style="color: var(--warning);"></i></div>
+            <div class="card-value">{{ finance.formatCurrency(finance.financialData.accountsReceivable) }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Overdue</div><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i></div>
+            <div class="card-value">{{ finance.formatCurrency(8250) }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Due This Week</div><i class="fas fa-calendar-week" style="color: var(--primary);"></i></div>
+            <div class="card-value">{{ finance.formatCurrency(15300) }}</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Customers</div><i class="fas fa-user-friends" style="color: var(--success);"></i></div>
+            <div class="card-value">78</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fixed Assets -->
+    <div *ngSwitchCase="'assets'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-building"></i> Fixed Assets</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary">Add Asset</button>
+            <button class="btn btn-success">Run Depreciation</button>
+            <button class="btn btn-outline">Export</button>
+          </div>
+        </div>
+        <div class="cards-container">
+          <div class="card"><div class="card-header"><div class="card-title">Total Assets Value</div><i class="fas fa-building" style="color: var(--primary);"></i></div><div class="card-value">{{ finance.formatCurrency(250000) }}</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Accumulated Depreciation</div><i class="fas fa-chart-line" style="color: var(--warning);"></i></div><div class="card-value">{{ finance.formatCurrency(45250) }}</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Net Book Value</div><i class="fas fa-balance-scale" style="color: var(--success);"></i></div><div class="card-value">{{ finance.formatCurrency(204750) }}</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Active Assets</div><i class="fas fa-boxes" style="color: var(--info);"></i></div><div class="card-value">24</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bank & Reconciliation -->
+    <div *ngSwitchCase="'bank'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-university"></i> Bank & Reconciliation</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary">Add Bank Account</button>
+            <button class="btn btn-success">Import Statement</button>
+            <button class="btn btn-info">Reconcile</button>
+          </div>
+        </div>
+        <div class="cards-container">
+          <div class="card"><div class="card-header"><div class="card-title">Total Bank Balance</div><i class="fas fa-university" style="color: var(--primary);"></i></div><div class="card-value">{{ finance.formatCurrency(125420) }}</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Unreconciled Items</div><i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i></div><div class="card-value">18</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Last Reconciliation</div><i class="fas fa-calendar-check" style="color: var(--success);"></i></div><div class="card-value">Oct 25, 2023</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Bank Accounts</div><i class="fas fa-credit-card" style="color: var(--info);"></i></div><div class="card-value">4</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Budgeting -->
+    <div *ngSwitchCase="'budget'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-chart-line"></i> Budgeting</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary">Create Budget</button>
+            <button class="btn btn-success">Copy from Previous</button>
+            <button class="btn btn-info">Variance Analysis</button>
+          </div>
+        </div>
+        <div class="cards-container">
+          <div class="card"><div class="card-header"><div class="card-title">Current Budget</div><i class="fas fa-calendar-alt" style="color: var(--primary);"></i></div><div class="card-value">Q4 2023</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Total Budget</div><i class="fas fa-dollar-sign" style="color: var(--success);"></i></div><div class="card-value">{{ finance.formatCurrency(450000) }}</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Actual vs Budget</div><i class="fas fa-chart-pie" style="color: var(--warning);"></i></div><div class="card-value">95.2%</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Over Budget Items</div><i class="fas fa-exclamation-circle" style="color: var(--danger);"></i></div><div class="card-value">3</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Financial Reports -->
+    <div *ngSwitchCase="'reports'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-chart-bar"></i> Financial Reports</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary">Balance Sheet</button>
+            <button class="btn btn-success">Income Statement</button>
+            <button class="btn btn-info">Cash Flow</button>
+          </div>
+        </div>
+        <div class="cards-container">
+          <div class="card report-card">
+            <div class="card-header"><div class="card-title"><i class="fas fa-balance-scale"></i> Balance Sheet</div><i class="fas fa-download" style="color: var(--primary);"></i></div>
+            <p>Snapshot of financial position at a specific date</p>
+            <button class="btn btn-outline">View Report</button>
+          </div>
+          <div class="card report-card">
+            <div class="card-header"><div class="card-title"><i class="fas fa-chart-line"></i> Income Statement</div><i class="fas fa-download" style="color: var(--success);"></i></div>
+            <p>Profit and loss for the period</p>
+            <button class="btn btn-outline">View Report</button>
+          </div>
+          <div class="card report-card">
+            <div class="card-header"><div class="card-title"><i class="fas fa-money-bill-wave"></i> Cash Flow</div><i class="fas fa-download" style="color: var(--info);"></i></div>
+            <p>Cash inflows and outflows</p>
+            <button class="btn btn-outline">View Report</button>
+          </div>
+          <div class="card report-card">
+            <div class="card-header"><div class="card-title"><i class="fas fa-chart-pie"></i> Financial Ratios</div><i class="fas fa-download" style="color: var(--warning);"></i></div>
+            <p>Key performance indicators</p>
+            <button class="btn btn-outline">View Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Management -->
+    <div *ngSwitchCase="'users'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-users-cog"></i> User Management</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary">Add User</button>
+            <button class="btn btn-success">Manage Roles</button>
+            <button class="btn btn-info">View Audit Logs</button>
+          </div>
+        </div>
+        <div class="cards-container">
+          <div class="card"><div class="card-header"><div class="card-title">Total Users</div><i class="fas fa-users" style="color: var(--primary);"></i></div><div class="card-value">{{ totalUsers }}</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Active Users</div><i class="fas fa-user-check" style="color: var(--success);"></i></div><div class="card-value">{{ activeUsers }}</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Inactive Users</div><i class="fas fa-user-slash" style="color: var(--danger);"></i></div><div class="card-value">{{ inactiveUsers }}</div></div>
+          <div class="card"><div class="card-header"><div class="card-title">User Roles</div><i class="fas fa-user-tag" style="color: var(--info);"></i></div><div class="card-value">4</div></div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>User ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Last Login</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of finance.users">
+                <td>{{ user.userId }}</td>
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.email }}</td>
+                <td><span class="badge badge-primary">{{ user.role }}</span></td>
+                <td>{{ user.department }}</td>
+                <td>{{ user.lastLogin }}</td>
+                <td><span class="badge" [ngClass]="user.status === 'Active' ? 'badge-success' : 'badge-danger'">{{ user.status }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module Setup -->
+    <div *ngSwitchCase="'setup'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-cogs"></i> Module Setup</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary">Save Settings</button>
+            <button class="btn btn-success">Test Connection</button>
+            <button class="btn btn-info">Backup Config</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Fiscal Year Start</label>
+            <select class="form-control">
+              <option>January</option>
+              <option>April</option>
+              <option>July</option>
+              <option>October</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Base Currency</label>
+            <select class="form-control">
+              <option>USD - US Dollar</option>
+              <option>EUR - Euro</option>
+              <option>GBP - British Pound</option>
+              <option>JPY - Japanese Yen</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tax Identification Number</label>
+          <input type="text" class="form-control" placeholder="Enter TAX ID" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Accounting Method</label>
+          <select class="form-control">
+            <option>Accrual Basis</option>
+            <option>Cash Basis</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Domain Comparison -->
+    <div *ngSwitchCase="'comparison'">
+      <div class="module-section">
+        <div class="section-header">
+          <h2 class="section-title"><i class="fas fa-columns"></i> Domain Comparison</h2>
+          <div class="section-actions">
+            <button class="btn btn-primary" (click)="applyDomainSettings('hotel')">Hotel</button>
+            <button class="btn btn-primary" (click)="applyDomainSettings('education')">Education</button>
+            <button class="btn btn-primary" (click)="applyDomainSettings('banking')">Banking</button>
+            <button class="btn btn-primary" (click)="applyDomainSettings('manufacturing')">Manufacturing</button>
+          </div>
+        </div>
+        <div class="domain-comparison">
+          <div class="domain-card">
+            <h3><i class="fas fa-hotel"></i> Hotel Industry</h3>
+            <p><strong>Revenue Recognition:</strong> Daily room revenue, event bookings</p>
+            <p><strong>Key Accounts:</strong> Rooms, F&B, Banquets</p>
+            <p><strong>AP Focus:</strong> Many small vendors (suppliers, services)</p>
+          </div>
+          <div class="domain-card">
+            <h3><i class="fas fa-graduation-cap"></i> Education Sector</h3>
+            <p><strong>Revenue Recognition:</strong> Tuition fees, grants, research funds</p>
+            <p><strong>Key Accounts:</strong> Fund accounting, grants, research</p>
+            <p><strong>AP Focus:</strong> Faculty payments, infrastructure</p>
+          </div>
+          <div class="domain-card">
+            <h3><i class="fas fa-university"></i> Banking</h3>
+            <p><strong>Revenue Recognition:</strong> Interest income, fees, commissions</p>
+            <p><strong>Key Accounts:</strong> Regulatory structure, provisions</p>
+            <p><strong>AP Focus:</strong> Few large vendors, interbank</p>
+          </div>
+          <div class="domain-card">
+            <h3><i class="fas fa-industry"></i> Manufacturing</h3>
+            <p><strong>Revenue Recognition:</strong> Product sales, service contracts</p>
+            <p><strong>Key Accounts:</strong> Cost centers by product line</p>
+            <p><strong>AP Focus:</strong> Raw material suppliers, MRO</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Modals -->
+  <div class="modal" [class.active]="showAddAccountModalFlag" (click)="closeModal($event, 'account')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ editingAccountId ? 'Edit Account' : 'Add Account' }}</h3>
+        <button class="close-btn" (click)="closeAddAccountModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Account Code *</label>
+            <input class="form-control" [(ngModel)]="accountForm.code" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Parent Account</label>
+            <select class="form-control" [(ngModel)]="accountForm.parentId">
+              <option [ngValue]="null">No Parent (Top Level)</option>
+              <option *ngFor="let parent of accountParents" [ngValue]="parent.id">{{ parent.code }} - {{ parent.name }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Name *</label>
+          <input class="form-control" [(ngModel)]="accountForm.name" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Account Type *</label>
+            <select class="form-control" [(ngModel)]="accountForm.type" required>
+              <option value="">Select Type</option>
+              <option value="Asset">Asset</option>
+              <option value="Liability">Liability</option>
+              <option value="Equity">Equity</option>
+              <option value="Revenue">Revenue</option>
+              <option value="Expense">Expense</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sub-Type</label>
+            <select class="form-control" [(ngModel)]="accountForm.subType">
+              <option value="">Select Sub-Type</option>
+              <option value="Current Asset">Current Asset</option>
+              <option value="Fixed Asset">Fixed Asset</option>
+              <option value="Current Liability">Current Liability</option>
+              <option value="Long-term Liability">Long-term Liability</option>
+              <option value="Operating Revenue">Operating Revenue</option>
+              <option value="Non-operating Revenue">Non-operating Revenue</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Opening Balance</label>
+            <input type="number" class="form-control" [(ngModel)]="accountForm.balance" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Currency</label>
+            <select class="form-control" [(ngModel)]="accountForm.currency">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" rows="3" [(ngModel)]="accountForm.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><input type="checkbox" [(ngModel)]="accountForm.status" [ngModelOptions]="{standalone:true}" /> Active Account</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeAddAccountModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveAccount()">Save Account</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" [class.active]="showJournalEntryModalFlag" (click)="closeModal($event, 'journal')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create Journal Entry</h3>
+        <button class="close-btn" (click)="closeJournalEntryModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Entry Date *</label>
+            <input type="date" class="form-control" [(ngModel)]="journalForm.date" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Journal Type</label>
+            <select class="form-control" [(ngModel)]="journalForm.type">
+              <option value="General">General Journal</option>
+              <option value="Sales">Sales Journal</option>
+              <option value="Purchase">Purchase Journal</option>
+              <option value="Cash">Cash Journal</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description *</label>
+          <input class="form-control" [(ngModel)]="journalForm.description" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Reference Number</label>
+          <input class="form-control" [(ngModel)]="journalForm.reference" />
+        </div>
+        <h4>Journal Lines</h4>
+        <div *ngFor="let line of journalForm.lines; let i = index" class="journal-line">
+          <select class="form-control" [(ngModel)]="line.account">
+            <option value="">Select Account</option>
+            <option *ngFor="let account of finance.chartOfAccounts" [value]="account.name">{{ account.code }} - {{ account.name }}</option>
+          </select>
+          <input type="number" class="form-control" placeholder="Debit" [(ngModel)]="line.debit" step="0.01" />
+          <input type="number" class="form-control" placeholder="Credit" [(ngModel)]="line.credit" step="0.01" />
+          <input type="text" class="form-control" placeholder="Line Description" [(ngModel)]="line.description" />
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeJournalLine(i)"><i class="fas fa-times"></i></button>
+        </div>
+        <button type="button" class="btn btn-outline" (click)="addJournalLine()"><i class="fas fa-plus"></i> Add Line</button>
+        <div class="form-row" style="margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+          <div class="form-group">
+            <label class="form-label">Total Debit</label>
+            <input class="form-control" [value]="finance.formatCurrency(journalTotals.debit)" readonly />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Total Credit</label>
+            <input class="form-control" [value]="finance.formatCurrency(journalTotals.credit)" readonly />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Difference</label>
+            <input class="form-control" [value]="finance.formatCurrency(journalDifference)" readonly />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeJournalEntryModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveJournalEntry()">Save Journal Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" [class.active]="showInvoiceModalFlag" (click)="closeModal($event, 'invoice')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Invoice</h3>
+        <button class="close-btn" (click)="closeInvoiceModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Vendor *</label>
+            <select class="form-control" [(ngModel)]="invoiceForm.vendor" required>
+              <option value="">Select Vendor</option>
+              <option value="Office Supplies Ltd">Office Supplies Ltd</option>
+              <option value="Tech Solutions Inc">Tech Solutions Inc</option>
+              <option value="Utilities Corp">Utilities Corp</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Invoice Number *</label>
+            <input class="form-control" [(ngModel)]="invoiceForm.invoiceNo" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Invoice Date *</label>
+            <input type="date" class="form-control" [(ngModel)]="invoiceForm.date" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Due Date *</label>
+            <input type="date" class="form-control" [(ngModel)]="invoiceForm.dueDate" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount *</label>
+          <input type="number" class="form-control" [(ngModel)]="invoiceForm.amount" step="0.01" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" rows="3" [(ngModel)]="invoiceForm.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account</label>
+          <select class="form-control" [(ngModel)]="invoiceForm.account">
+            <option value="">Select Account</option>
+            <option value="Accounts Payable">Accounts Payable</option>
+            <option value="Office Supplies Expense">Office Supplies Expense</option>
+            <option value="Utilities Expense">Utilities Expense</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeInvoiceModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="createInvoice()">Save Invoice</button>
+      </div>
+    </div>
+  </div>
+</div>

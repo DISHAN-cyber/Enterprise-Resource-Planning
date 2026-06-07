@@ -1,0 +1,14 @@
+<nav class="sidebar" [class.active]="sidebarOpen">
+  <div class="sidebar-header">
+    <h2><i class="fas fa-calculator"></i> ERP Finance</h2>
+  </div>
+  <ul class="sidebar-menu">
+    <li *ngFor="let item of menuItems">
+      <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()">
+        <i [ngClass]="item.icon.split(' ')"></i>
+        <span class="menu-label">{{ item.label }}</span>
+        <span *ngIf="item.badge" class="badge new">{{ item.badge }}</span>
+      </a>
+    </li>
+  </ul>
+</nav>

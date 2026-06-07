@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: erp_finance
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: shayon7946
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../database/migrations:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  api-gateway:
+    build:
+      context: ../backend
+      dockerfile: api-gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - SPRING_REDIS_HOST=redis
+      - AUTH_SERVICE_HOST=auth-service
+      - AUTH_SERVICE_PORT=8081
+
+  auth-service:
+    build: ../backend/auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=shayon7946
+      - FRONTEND_URL=http://localhost:4200
+      - CORS_ORIGINS=http://localhost:4200,http://127.0.0.1:4200
+
+  ai-service:
+    build: ../ai-service
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ../frontend/erp-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - api-gateway
+
+volumes:
+  postgres_data:
+  redis_data:

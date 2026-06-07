@@ -1,0 +1,107 @@
+name: ERP CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  JAVA_VERSION: '21'
+  NODE_VERSION: '20'
+
+jobs:
+  # Backend Build & Test
+  backend-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [auth-service, finance-core-service, ap-service, ar-service]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: maven
+      
+      - name: Build ${{ matrix.service }}
+        working-directory: backend/${{ matrix.service }}
+        run: mvn -B clean package -DskipTests
+      
+      - name: Run Tests
+        working-directory: backend/${{ matrix.service }}
+        run: mvn -B test
+      
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.service }}-jar
+          path: backend/${{ matrix.service }}/target/*.jar
+
+  # Frontend Build & Test
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: erp-frontend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: erp-frontend
+        run: npm ci
+      
+      - name: Run Linter
+        working-directory: erp-frontend
+        run: npm run lint
+      
+      - name: Build Frontend
+        working-directory: erp-frontend
+        run: npm run build -- --configuration production
+      
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: erp-frontend/dist/
+
+  # Deploy to Staging (on main branch)
+  deploy-staging:
+    needs: [backend-build, frontend-build]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      
+      - name: Deploy to Staging Server
+        run: |
+          # Example: SSH deploy or Kubernetes rollout
+          echo "Deploying to staging environment..."
+          # ssh user@staging.erp.com "bash /opt/deploy.sh"
+        env:
+          DEPLOY_KEY: ${{ secrets.STAGING_DEPLOY_KEY }}
+
+  # Production Deployment (manual approval)
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Notify Production Deployment
+        run: |
+          echo "Production deployment ready for approval"
+          # Add Slack/Teams notification here

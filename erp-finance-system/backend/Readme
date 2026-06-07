@@ -1,0 +1,27 @@
+┌─────────────────────────────────────────────┐
+│              API Gateway (8080)              │
+│  • Route: /api/auth/** → auth-service      │
+│  • Route: /api/finance/** → finance-core   │
+│  • Route: /api/ap/** → ap-service          │
+│  • JWT Validation + Rate Limiting          │
+└────────────────┬────────────────────────────┘
+                 │
+    ┌────────────┴────────────┐
+    ▼                         ▼
+┌─────────┐           ┌─────────────┐
+│auth-    │           │finance-core │
+│service  │           │service      │
+│(8081)   │           │(8082)       │
+│• JWT    │           │• Business   │
+│• OAuth2 │           │  Logic      │
+│• User   │           │• JPA/Postgres│
+│  Mgmt   │           │• Audit Log  │
+└─────────┘           └─────────────┘
+    ▲                         ▲
+    │                         │
+┌─────────┐           ┌─────────────┐
+│ap-      │           │ar-service   │
+│service  │           │(8084)       │
+│(8083)   │           │• Receivables│
+│• Payables│          │• Invoicing  │
+└─────────┘           └─────────────┘

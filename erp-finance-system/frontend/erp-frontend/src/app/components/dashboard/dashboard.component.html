@@ -1,0 +1,646 @@
+<div class="page-content" *ngIf="activePage === 'dashboard'">
+  <div class="cards-container">
+    <div class="card" *ngFor="let card of dashboardCards">
+      <div class="card-header">
+        <span class="card-title"><i class="{{ card.icon }}"></i> {{ card.title }}</span>
+        <span class="badge" [ngClass]="card.badgeClass">{{ card.subtitle }}</span>
+      </div>
+      <div class="card-value">{{ card.value }}</div>
+      <div class="card-trend" [class.positive]="card.trend > 0" [class.negative]="card.trend < 0">
+        <i class="fas" [ngClass]="card.trend > 0 ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+        {{ card.trendLabel }}
+      </div>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-chart-area"></i> Financial Overview</div>
+      <div class="section-actions">
+        <button class="btn btn-outline btn-sm" (click)="updateFinancialChart()">Refresh Chart</button>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas #financialChart width="800" height="320"></canvas>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-tasks"></i> Pending Tasks</div>
+      <div class="section-actions">
+        <button class="btn btn-success btn-sm" (click)="markAllComplete()">Mark All Complete</button>
+      </div>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Owner</th>
+            <th>Due</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of pendingActions">
+            <td>{{ task.task }}</td>
+            <td>{{ task.owner }}</td>
+            <td>{{ task.due }}</td>
+            <td><span class="badge badge-info">{{ task.status }}</span></td>
+            <td><button class="btn btn-primary btn-sm" (click)="completeAction(task.task)">Complete</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'coa'">
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-list-alt"></i> Chart of Accounts</div>
+      <div class="section-actions">
+        <button class="btn btn-primary btn-sm" (click)="openAddAccountModal()">Add Account</button>
+        <button class="btn btn-outline btn-sm" (click)="loadSampleCOA()">Refresh Data</button>
+      </div>
+    </div>
+
+    <div class="section-actions">
+      <button [class]="getCOAViewButtonClass('table')" (click)="setCOAView('table')">Table View</button>
+      <button [class]="getCOAViewButtonClass('hierarchy')" (click)="setCOAView('hierarchy')">Hierarchy View</button>
+      <button [class]="getCOAViewButtonClass('balances')" (click)="setCOAView('balances')">Balance Summary</button>
+    </div>
+
+    <div *ngIf="coaViewMode === 'table'">
+      <div class="search-filter">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input class="form-control" placeholder="Search accounts..." [(ngModel)]="coaSearchTerm" />
+        </div>
+        <select class="form-control filter-dropdown" [(ngModel)]="coaTypeFilter">
+          <option value="">All Types</option>
+          <option value="Asset">Asset</option>
+          <option value="Liability">Liability</option>
+          <option value="Equity">Equity</option>
+          <option value="Revenue">Revenue</option>
+          <option value="Expense">Expense</option>
+        </select>
+        <select class="form-control filter-dropdown" [(ngModel)]="coaStatusFilter">
+          <option value="">All Statuses</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Balance</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let account of filteredCOA">
+              <td>{{ account.code }}</td>
+              <td>{{ account.name }}</td>
+              <td>{{ account.type }}</td>
+              <td>{{ formatCurrency(account.balance) }}</td>
+              <td><span class="badge" [ngClass]="getAccountTypeBadge(account.type)">{{ account.status }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="coaViewMode === 'hierarchy'">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Account</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let group of coaHierarchy">
+              <tr>
+                <td>{{ group.code }}</td>
+                <td><strong>{{ group.name }}</strong></td>
+                <td>{{ group.type }}</td>
+              </tr>
+              <tr *ngFor="let child of group.children">
+                <td>↳ {{ child.code }}</td>
+                <td>{{ child.name }}</td>
+                <td>{{ child.type }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="coaViewMode === 'balances'">
+      <div class="cards-container">
+        <div class="card" *ngFor="let account of coaAccounts">
+          <div class="card-title"><i class="fas fa-chart-pie"></i> {{ account.name }}</div>
+          <div class="card-value">{{ formatCurrency(account.balance) }}</div>
+          <p>{{ account.type }}</p>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas #coaBalanceChart width="800" height="260"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'gl'">
+  <div class="cards-container">
+    <div class="card" *ngFor="let card of glSummaryCards">
+      <div class="card-header">
+        <span class="card-title"><i class="{{ card.icon }}"></i> {{ card.title }}</span>
+      </div>
+      <div class="card-value">{{ card.value }}</div>
+      <p>{{ card.note }}</p>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-book"></i> General Ledger</div>
+    </div>
+    <div class="search-filter">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input class="form-control" placeholder="Search journal entries..." [(ngModel)]="glSearchTerm" />
+      </div>
+      <input class="form-control" type="date" [(ngModel)]="glFromDate" />
+      <input class="form-control" type="date" [(ngModel)]="glToDate" />
+      <select class="form-control filter-dropdown" [(ngModel)]="glStatusFilter">
+        <option value="">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="Posted">Posted</option>
+      </select>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Reference</th>
+            <th>Description</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of filteredJournalEntries">
+            <td>{{ entry.date }}</td>
+            <td>{{ entry.reference }}</td>
+            <td>{{ entry.description }}</td>
+            <td>{{ formatCurrency(entry.debit) }}</td>
+            <td>{{ formatCurrency(entry.credit) }}</td>
+            <td><span class="badge" [ngClass]="getJournalStatusBadge(entry.status)">{{ entry.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'ap'">
+  <div class="cards-container">
+    <div class="card" *ngFor="let card of apSummaryCards">
+      <div class="card-header">
+        <span class="card-title"><i class="{{ card.icon }}"></i> {{ card.title }}</span>
+      </div>
+      <div class="card-value">{{ card.value }}</div>
+      <p>{{ card.note }}</p>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-file-invoice-dollar"></i> Accounts Payable</div>
+      <div class="section-actions">
+        <button class="btn btn-primary btn-sm" (click)="openAddInvoiceModal()">Add Invoice</button>
+      </div>
+    </div>
+
+    <div class="search-filter">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input class="form-control" placeholder="Filter invoices..." [(ngModel)]="apSearchTerm" />
+      </div>
+      <select class="form-control filter-dropdown" [(ngModel)]="apStatusFilter">
+        <option value="">All Statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Paid">Paid</option>
+      </select>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Vendor</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of filteredInvoices">
+            <td>{{ invoice.number }}</td>
+            <td>{{ invoice.vendor }}</td>
+            <td>{{ formatCurrency(invoice.amount) }}</td>
+            <td>{{ invoice.dueDate }}</td>
+            <td><span class="badge" [ngClass]="invoice.status === 'Paid' ? 'badge-success' : 'badge-warning'">{{ invoice.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'ar'">
+  <div class="cards-container">
+    <div class="card" *ngFor="let card of arSummaryCards">
+      <div class="card-header">
+        <span class="card-title"><i class="{{ card.icon }}"></i> {{ card.title }}</span>
+      </div>
+      <div class="card-value">{{ card.value }}</div>
+      <p>{{ card.note }}</p>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-hand-holding-usd"></i> Accounts Receivable</div>
+    </div>
+
+    <div class="search-filter">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input class="form-control" placeholder="Filter receivables..." [(ngModel)]="arSearchTerm" />
+      </div>
+      <select class="form-control filter-dropdown" [(ngModel)]="arStatusFilter">
+        <option value="">All Statuses</option>
+        <option value="Open">Open</option>
+        <option value="Overdue">Overdue</option>
+      </select>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bill of filteredReceivables">
+            <td>{{ bill.customer }}</td>
+            <td>{{ bill.description }}</td>
+            <td>{{ formatCurrency(bill.amount) }}</td>
+            <td><span class="badge" [ngClass]="bill.status === 'Open' ? 'badge-info' : 'badge-danger'">{{ bill.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'assets'">
+  <div class="cards-container">
+    <div class="card" *ngFor="let card of assetSummaries">
+      <div class="card-header">
+        <span class="card-title"><i class="{{ card.icon }}"></i> {{ card.title }}</span>
+      </div>
+      <div class="card-value">{{ card.value }}</div>
+      <p>{{ card.note }}</p>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-building"></i> Fixed Assets</div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Value</th>
+            <th>Acquired</th>
+            <th>Depreciation</th>
+            <th>Net Value</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let asset of assets">
+            <td>{{ asset.name }}</td>
+            <td>{{ asset.category }}</td>
+            <td>{{ formatCurrency(asset.value) }}</td>
+            <td>{{ asset.acquisitionDate }}</td>
+            <td>{{ formatCurrency(asset.depreciation) }}</td>
+            <td>{{ formatCurrency(asset.netBookValue) }}</td>
+            <td><span class="badge" [ngClass]="asset.status === 'Active' ? 'badge-success' : 'badge-warning'">{{ asset.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'bank'">
+  <div class="cards-container">
+    <div class="card" *ngFor="let card of bankSummaryCards">
+      <div class="card-header">
+        <span class="card-title"><i class="{{ card.icon }}"></i> {{ card.title }}</span>
+      </div>
+      <div class="card-value">{{ card.value }}</div>
+      <p>{{ card.note }}</p>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-university"></i> Bank Reconciliation</div>
+    </div>
+
+    <div class="cards-container">
+      <div class="card bank-card" *ngFor="let account of bankAccounts">
+        <div class="card-title"><i class="fas fa-wallet"></i> {{ account.name }}</div>
+        <div class="card-value">{{ formatCurrency(account.balance) }}</div>
+        <p>Account #: {{ account.number }}</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of bankTransactions">
+            <td>{{ transaction.date }}</td>
+            <td>{{ transaction.description }}</td>
+            <td>{{ formatCurrency(transaction.amount) }}</td>
+            <td>{{ transaction.type }}</td>
+            <td><span class="badge" [ngClass]="getReconciliationStatusBadge(transaction.status)">{{ transaction.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'budget'">
+  <div class="cards-container">
+    <div class="card" *ngFor="let budget of budgets">
+      <div class="card-header">
+        <span class="card-title"><i class="{{ budget.department === 'Operations' ? 'fas fa-industry' : 'fas fa-wallet' }}"></i> {{ budget.department }}</span>
+      </div>
+      <div class="card-value">{{ formatCurrency(budget.budgeted) }}</div>
+      <p>{{ budget.status }}</p>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-chart-line"></i> Budget Tracking</div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Department</th>
+            <th>Budgeted</th>
+            <th>Actual</th>
+            <th>Variance</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of budgets">
+            <td>{{ item.department }}</td>
+            <td>{{ formatCurrency(item.budgeted) }}</td>
+            <td>{{ formatCurrency(item.actual) }}</td>
+            <td>{{ formatCurrency(item.variance) }}</td>
+            <td><span class="badge" [ngClass]="getBudgetStatusBadge(item.status)">{{ item.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'reports'">
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-chart-bar"></i> Financial Reports</div>
+    </div>
+    <div class="domain-comparison">
+      <div class="domain-card" *ngFor="let report of reports">
+        <h3>{{ report.title }}</h3>
+        <p>{{ report.summary }}</p>
+        <button class="btn btn-outline btn-sm" (click)="viewReport(report.title)">Open Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'users'">
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-users-cog"></i> User Management</div>
+    </div>
+    <div class="search-filter">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input class="form-control" placeholder="Search users..." />
+      </div>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Department</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.department }}</td>
+            <td><span class="badge" [ngClass]="user.status === 'Active' ? 'badge-success' : 'badge-danger'">{{ user.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'setup'">
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-cogs"></i> Module Setup</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Company Name</label>
+        <input class="form-control" [(ngModel)]="setup.companyName" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fiscal Year</label>
+        <input class="form-control" [(ngModel)]="setup.fiscalYear" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Default Currency</label>
+        <input class="form-control" [(ngModel)]="setup.currency" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Invoice Prefix</label>
+        <input class="form-control" [(ngModel)]="setup.invoicePrefix" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Approval Workflow</label>
+        <select class="form-control" [(ngModel)]="setup.approvalWorkflow">
+          <option value="Standard">Standard</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Close Period</label>
+        <select class="form-control" [(ngModel)]="setup.closePeriod">
+          <option value="Monthly">Monthly</option>
+          <option value="Quarterly">Quarterly</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="saveSetup()">Save Setup</button>
+  </div>
+</div>
+
+<div class="page-content" *ngIf="activePage === 'comparison'">
+  <div class="module-section">
+    <div class="section-header">
+      <div class="section-title"><i class="fas fa-columns"></i> Domain Comparison</div>
+    </div>
+    <div class="domain-comparison">
+      <div class="domain-card" *ngFor="let domain of comparisonDomains">
+        <h3>{{ domain.title }}</h3>
+        <p>{{ domain.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" [class.active]="showAddAccountModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Add Account to Chart of Accounts</h3>
+      <button class="close-btn" (click)="closeModal('addAccount')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Account Code</label>
+          <input class="form-control" [(ngModel)]="newAccount.code" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Name</label>
+          <input class="form-control" [(ngModel)]="newAccount.name" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-control" [(ngModel)]="newAccount.type">
+            <option value="Asset">Asset</option>
+            <option value="Liability">Liability</option>
+            <option value="Equity">Equity</option>
+            <option value="Revenue">Revenue</option>
+            <option value="Expense">Expense</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Balance</label>
+          <input type="number" class="form-control" [(ngModel)]="newAccount.balance" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="closeModal('addAccount')">Cancel</button>
+      <button class="btn btn-primary" (click)="saveAccount()">Save Account</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" [class.active]="showAddInvoiceModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Add Invoice</h3>
+      <button class="close-btn" (click)="closeModal('addInvoice')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Invoice Number</label>
+          <input class="form-control" [(ngModel)]="newInvoice.number" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vendor</label>
+          <input class="form-control" [(ngModel)]="newInvoice.vendor" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Amount</label>
+          <input type="number" class="form-control" [(ngModel)]="newInvoice.amount" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Due Date</label>
+          <input type="date" class="form-control" [(ngModel)]="newInvoice.dueDate" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="closeModal('addInvoice')">Cancel</button>
+      <button class="btn btn-primary" (click)="saveInvoice()">Save Invoice</button>
+    </div>
+  </div>
+</div>
