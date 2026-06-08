@@ -18,7 +18,7 @@
 
 ✨ A **production-ready ERP system** designed for modern enterprises.
 It combines **finance, analytics, mobile access, and AI intelligence** into one scalable platform.
-
+<img width="953" height="484" alt="image" src="https://github.com/user-attachments/assets/788bca94-c3cd-427f-9cab-327a1f3ac12b" />
 ---
 
 ## 🧱 Tech Stack
